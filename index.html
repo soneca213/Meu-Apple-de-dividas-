@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador Financeiro Pro</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #ff8c00;
+            --primary-hover: #e07b00;
+            --text-color: #ffffff;
+            --text-secondary: #b3b3b3;
+            --danger: #ff4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-top: 5px solid var(--primary);
+        }
+
+        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 15px; }
+
+        label { display: block; margin-bottom: 5px; color: var(--text-secondary); font-size: 14px; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+        .summary {
+            margin-top: 25px;
+            padding: 15px;
+            background: #252525;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .balance-label { font-size: 14px; color: var(--text-secondary); }
+        .balance-value { font-size: 28px; font-weight: bold; color: var(--primary); margin: 5px 0; }
+
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th { text-align: left; color: var(--primary); border-bottom: 1px solid #333; padding: 10px; }
+        td { padding: 10px; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+        
+        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>💰 Meu Saldo</h2>
+    
+    <div class="input-group">
+        <label>Receita Total (Quanto você tem?)</label>
+        <input type="number" id="totalIncome" placeholder="Ex: 5000" oninput="calculate()">
+    </div>
+
+    <hr style="border: 0.5px solid #333; margin: 25px 0;">
+
+    <h3>Adicionar Gasto</h3>
+    <div class="input-group">
+        <input type="text" id="reason" placeholder="Motivo (Ex: Aluguel)">
+    </div>
+    <div class="input-group" style="display: flex; gap: 10px;">
+        <input type="number" id="cost" placeholder="Valor (R$)">
+        <input type="date" id="payDate">
+    </div>
+    <button onclick="addExpense()">Adicionar Conta</button>
+
+    <div class="summary">
+        <div class="balance-label">VAI SOBRAR:</div>
+        <div class="balance-value" id="finalBalance">R$ 0,00</div>
+    </div>
+
+    <table id="expenseTable">
+        <thead>
+            <tr>
+                <th>Motivo</th>
+                <th>Data</th>
+                <th>Valor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="expenseList">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    let expenses = [];
+
+    function addExpense() {
+        const reason = document.getElementById('reason').value;
+        const cost = parseFloat(document.getElementById('cost').value);
+        const payDate = document.getElementById('payDate').value;
+
+        if (!reason || isNaN(cost)) {
+            alert("Por favor, preencha o motivo e o valor corretamente.");
+            return;
+        }
+
+        const expense = {
+            id: Date.now(),
+            reason,
+            cost,
+            payDate: payDate || 'N/A'
+        };
+
+        expenses.push(expense);
+        updateUI();
+        
+        // Limpar campos
+        document.getElementById('reason').value = '';
+        document.getElementById('cost').value = '';
+        document.getElementById('payDate').value = '';
+    }
+
+    function removeExpense(id) {
+        expenses = expenses.filter(e => e.id !== id);
+        updateUI();
+    }
+
+    function calculate() {
+        const income = parseFloat(document.getElementById('totalIncome').value) || 0;
+        const totalExpenses = expenses.reduce((sum, e) => sum + e.cost, 0);
+        const result = income - totalExpenses;
+
+        const balanceDisplay = document.getElementById('finalBalance');
+        balanceDisplay.innerText = result.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
+        
+        // Cor do saldo
+        balanceDisplay.style.color = result < 0 ? "#ff4444" : "#ff8c00";
+    }
+
+    function updateUI() {
+        const list = document.getElementById('expenseList');
+        list.innerHTML = '';
+
+        expenses.forEach(e => {
+            const row = `<tr>
+                <td>${e.reason}</td>
+                <td>${e.payDate}</td>
+                <td>R$ ${e.cost.toFixed(2)}</td>
+                <td class="btn-delete" onclick="removeExpense(${e.id})">✕</td>
+            </tr>`;
+            list.innerHTML += row;
+        });
+
+        calculate();
+    }
+</script>
+
+</body>
+</html>
