@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador Financeiro Pro</title>
+    <title>Gerenciador Financeiro Pro - Salvo</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
             --primary: #ff8c00;
             --primary-hover: #e07b00;
             --text-color: #ffffff;
-            --text-secondary: #b3b3b3;
+            --text-secondary: #aaaaaa;
             --danger: #ff4444;
+            --input-bg: #222222;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -29,89 +30,97 @@
             width: 100%;
             max-width: 500px;
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-top: 5px solid var(--primary);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.1);
+            border: 1px solid #333;
         }
 
-        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; }
+        h2 { text-align: center; color: var(--primary); letter-spacing: 1px; }
 
         .input-group { margin-bottom: 15px; }
 
-        label { display: block; margin-bottom: 5px; color: var(--text-secondary); font-size: 14px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 13px; text-transform: uppercase; }
 
         input {
             width: 100%;
-            padding: 12px;
-            background: #2a2a2a;
+            padding: 14px;
+            background: var(--input-bg);
             border: 1px solid #333;
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
             box-sizing: border-box;
             outline: none;
-            transition: border 0.3s;
+            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary); }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(255, 140, 0, 0.3); }
 
         button {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             background: var(--primary);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: black;
-            font-weight: bold;
+            font-weight: 800;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 16px;
+            text-transform: uppercase;
         }
 
-        button:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        button:hover { background: var(--primary-hover); transform: scale(1.02); }
 
         .summary {
-            margin-top: 25px;
-            padding: 15px;
-            background: #252525;
-            border-radius: 10px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #111;
+            border-radius: 15px;
             text-align: center;
+            border-left: 4px solid var(--primary);
         }
 
-        .balance-label { font-size: 14px; color: var(--text-secondary); }
-        .balance-value { font-size: 28px; font-weight: bold; color: var(--primary); margin: 5px 0; }
+        .balance-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; }
+        .balance-value { font-size: 32px; font-weight: bold; color: var(--primary); }
 
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        th { text-align: left; color: var(--primary); border-bottom: 1px solid #333; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+        table { width: 100%; margin-top: 25px; border-collapse: collapse; }
+        th { text-align: left; color: var(--primary); border-bottom: 2px solid #333; padding: 12px; font-size: 14px; }
+        td { padding: 12px; border-bottom: 1px solid #222; font-size: 14px; }
         
-        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; }
+        .btn-delete { color: var(--danger); cursor: pointer; text-align: center; font-size: 18px; }
+        .btn-delete:hover { opacity: 0.7; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>💰 Meu Saldo</h2>
+    <h2>MINHAS CONTAS</h2>
     
     <div class="input-group">
-        <label>Receita Total (Quanto você tem?)</label>
-        <input type="number" id="totalIncome" placeholder="Ex: 5000" oninput="calculate()">
+        <label>Saldo Total Disponível</label>
+        <input type="number" id="totalIncome" placeholder="Ex: 3000" oninput="saveData()">
     </div>
 
-    <hr style="border: 0.5px solid #333; margin: 25px 0;">
+    <div style="margin: 30px 0; border-bottom: 1px solid #333;"></div>
 
-    <h3>Adicionar Gasto</h3>
     <div class="input-group">
-        <input type="text" id="reason" placeholder="Motivo (Ex: Aluguel)">
+        <label>Motivo do Gasto</label>
+        <input type="text" id="reason" placeholder="Ex: Internet">
     </div>
     <div class="input-group" style="display: flex; gap: 10px;">
-        <input type="number" id="cost" placeholder="Valor (R$)">
-        <input type="date" id="payDate">
+        <div style="flex: 2;">
+            <label>Valor (R$)</label>
+            <input type="number" id="cost" placeholder="0.00">
+        </div>
+        <div style="flex: 2;">
+            <label>Data</label>
+            <input type="date" id="payDate">
+        </div>
     </div>
-    <button onclick="addExpense()">Adicionar Conta</button>
+    <button onclick="addExpense()">Adicionar Gasto</button>
 
     <div class="summary">
-        <div class="balance-label">VAI SOBRAR:</div>
+        <div class="balance-label">SOBRA LÍQUIDA:</div>
         <div class="balance-value" id="finalBalance">R$ 0,00</div>
     </div>
 
@@ -124,42 +133,41 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody id="expenseList">
-            </tbody>
+        <tbody id="expenseList"></tbody>
     </table>
 </div>
 
 <script>
-    let expenses = [];
+    let expenses = JSON.parse(localStorage.getItem('myExpenses')) || [];
+    document.getElementById('totalIncome').value = localStorage.getItem('myIncome') || '';
+
+    function saveData() {
+        const income = document.getElementById('totalIncome').value;
+        localStorage.setItem('myIncome', income);
+        localStorage.setItem('myExpenses', JSON.stringify(expenses));
+        calculate();
+    }
 
     function addExpense() {
         const reason = document.getElementById('reason').value;
         const cost = parseFloat(document.getElementById('cost').value);
         const payDate = document.getElementById('payDate').value;
 
-        if (!reason || isNaN(cost)) {
-            alert("Por favor, preencha o motivo e o valor corretamente.");
-            return;
-        }
+        if (!reason || isNaN(cost)) return alert("Preencha os dados!");
 
-        const expense = {
-            id: Date.now(),
-            reason,
-            cost,
-            payDate: payDate || 'N/A'
-        };
-
-        expenses.push(expense);
-        updateUI();
+        expenses.push({ id: Date.now(), reason, cost, payDate: payDate || '--' });
         
-        // Limpar campos
         document.getElementById('reason').value = '';
         document.getElementById('cost').value = '';
         document.getElementById('payDate').value = '';
+        
+        saveData();
+        updateUI();
     }
 
     function removeExpense(id) {
         expenses = expenses.filter(e => e.id !== id);
+        saveData();
         updateUI();
     }
 
@@ -170,27 +178,25 @@
 
         const balanceDisplay = document.getElementById('finalBalance');
         balanceDisplay.innerText = result.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
-        
-        // Cor do saldo
         balanceDisplay.style.color = result < 0 ? "#ff4444" : "#ff8c00";
     }
 
     function updateUI() {
         const list = document.getElementById('expenseList');
         list.innerHTML = '';
-
         expenses.forEach(e => {
-            const row = `<tr>
+            list.innerHTML += `<tr>
                 <td>${e.reason}</td>
-                <td>${e.payDate}</td>
+                <td style="color: #888">${e.payDate}</td>
                 <td>R$ ${e.cost.toFixed(2)}</td>
-                <td class="btn-delete" onclick="removeExpense(${e.id})">✕</td>
+                <td class="btn-delete" onclick="removeExpense(${e.id})">×</td>
             </tr>`;
-            list.innerHTML += row;
         });
-
         calculate();
     }
+
+    // Carregar dados ao abrir
+    updateUI();
 </script>
 
 </body>
