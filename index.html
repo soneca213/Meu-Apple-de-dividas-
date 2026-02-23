@@ -7,102 +7,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #7a00ff; --secondary: #c400ff; }
+        :root {
+            --primary: #7a00ff;
+            --secondary: #c400ff;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             min-height: 100vh;
             background: radial-gradient(circle at center, #2a003f, #12001c);
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            display: flex; justify-content: center; align-items: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Container Envelope + Texto */
+        /* Container que agrupa envelope + texto abaixo */
         .main-container {
-            display: flex; flex-direction: column; align-items: center; gap: 25px; z-index: 100;
-            transition: all 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            z-index: 100;
+            transition: opacity 0.6s, transform 0.6s;
         }
 
+        .main-container.fade-out {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* ===== ENVELOPE ===== */
         .envelope-wrapper {
-            position: relative; width: 280px; height: 180px; background-color: #3d005e;
-            cursor: pointer; perspective: 1000px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: relative;
+            width: 280px;
+            height: 180px;
+            background-color: #3d005e;
+            cursor: pointer;
+            perspective: 1000px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        /* Aba do envelope */
-        .envelope-wrapper::before {
-            content: ""; position: absolute; top: 0; z-index: 2;
-            border-left: 140px solid transparent; border-right: 140px solid transparent;
-            border-top: 90px solid var(--primary); transform-origin: top;
+        .envelope-wrapper::before { /* Aba */
+            content: "";
+            position: absolute;
+            top: 0; z-index: 2;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 90px solid var(--primary);
+            transform-origin: top;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Corpo do envelope */
-        .envelope-wrapper::after {
-            content: ""; position: absolute; z-index: 1; width: 0; height: 0;
-            border-left: 140px solid transparent; border-right: 140px solid transparent;
-            border-bottom: 90px solid #4b0082; bottom: 0;
+        .envelope-wrapper::after { /* Corpo */
+            content: "";
+            position: absolute;
+            z-index: 1;
+            width: 0; height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 90px solid #4b0082;
+            bottom: 0;
         }
 
         .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 0; }
-        .main-container.fade-out { opacity: 0; transform: scale(0.7); pointer-events: none; }
 
         .texto-abrir {
-            color: white; font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;
-            text-shadow: 0 0 10px var(--primary); animation: piscar 1.2s infinite;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            text-shadow: 0 0 10px var(--primary);
+            animation: piscar 1.5s infinite;
         }
 
-        @keyframes piscar { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
 
-        /* Cartão Convite */
+        /* ===== CARTÃO CONVITE ===== */
         .card-luxo {
-            position: absolute; display: none; z-index: 2; width: 92%; max-width: 450px;
-            background: rgba(255,255,255,0.96); border-radius: 35px; padding: 30px 20px;
-            flex-direction: column; gap: 15px; text-align: center; border: 3px solid var(--primary);
-            animation: surgir 0.8s ease-out forwards;
+            position: relative;
+            display: none;
+            z-index: 2;
+            width: 92%;
+            max-width: 450px;
+            max-height: 90vh;
+            background: rgba(255,255,255,0.95);
+            border-radius: 35px;
+            padding: 30px 20px;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+            overflow-y: auto;
+            border: 3px solid var(--primary);
+            animation: surgir 1s ease-out forwards;
         }
 
-        @keyframes surgir { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes surgir {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
+        .idade { font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 5px; color: #7b1fa2; }
         .nome { 
-            font-family: 'Pinyon Script', cursive; font-size: 3.5rem;
+            font-family: 'Pinyon Script', cursive; font-size: 3.8rem;
             background: linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
-            background-size: 200% auto; color: transparent; -webkit-background-clip: text;
+            background-size: 200% auto; color: transparent;
+            -webkit-background-clip: text; background-clip: text;
+            animation: brilhoNome 4s linear infinite;
         }
+        .infos { font-size: 1.1rem; line-height: 1.5; color: #333; }
+        .infos b { display: block; color: #7b1fa2; font-size: 1.2rem; margin-top: 5px; }
 
-        .infos b { display: block; color: #7b1fa2; margin-top: 5px; }
-        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; width: 100%; outline: none; }
+        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; outline: none; width: 100%; }
         button { padding: 15px; background: #7b1fa2; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .nao-ir { color: #7a00ff; cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
 
-        /* Estrelas */
+        /* ===== ESTRELAS ===== */
         #container-estrelas { position: fixed; top:0; left:0; width:100%; height:100%; z-index: 1; pointer-events: none; }
-        .glitter { position: absolute; animation: cair linear infinite; color: #c400ff; }
+        .glitter { position: absolute; animation: cair linear infinite; opacity: 0.8; color: #c400ff; }
         @keyframes cair { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <audio id="musica" preload="auto">
-        <source src="musica.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="main-container" id="mainContainer" onclick="abrirTudo()">
-        <div class="envelope-wrapper" id="envelope"></div>
-        <div class="texto-abrir">CLIQUE NO ENVELOPE PARA ABRIR</div>
+    <div class="main-container" id="mainContainer">
+        <div class="envelope-wrapper" id="envelope" onclick="abrirTudo()"></div>
+        <div class="texto-abrir">CLIQUE PARA ABRIR</div>
     </div>
 
     <div id="container-estrelas"></div>
 
     <div class="card-luxo" id="cartao">
-        <p style="letter-spacing: 5px; color: #7b1fa2;">17 ANOS</p>
+        <p class="idade">17 ANOS</p>
         <h1 class="nome">Thaís Vitória</h1>
+        <p style="font-style: italic; color: #6d4c7d;">"Celebrar a vida é colecionar momentos ao lado de quem amamos."</p>
+
         <div class="infos">
             📅 <b>25 DE ABRIL DE 2026</b>
             ⏰ <b>ÀS 19:30 HORAS</b>
             📍 <b>RUA DO EVENTO, Nº 00</b>
         </div>
+
         <input type="text" id="nomeConvidado" placeholder="Seu nome completo">
         <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
-        <p style="color: #7a00ff; cursor: pointer; font-size: 0.8rem;" onclick="confirmar(false)">Não poderei ir</p>
+        <p class="nao-ir" onclick="confirmar(false)">Não poderei ir</p>
     </div>
 
     <script>
@@ -112,12 +170,13 @@
             const cartao = document.getElementById('cartao');
             const musica = document.getElementById('musica');
 
-            // Garante que o som toque do início
-            musica.currentTime = 0;
-            musica.play().catch(e => console.log("O navegador bloqueou o som inicial."));
+            // Play imediato na música
+            musica.play();
 
+            // Abre a aba
             env.classList.add('open');
 
+            // Remove o envelope e mostra o cartão
             setTimeout(() => {
                 container.classList.add('fade-out');
                 setTimeout(() => {
@@ -130,24 +189,27 @@
 
         function soltarEstrelas() {
             const container = document.getElementById('container-estrelas');
+            const cores = ['#6a00ff', '#9c00ff', '#c400ff', '#ffffff'];
             setInterval(() => {
                 const g = document.createElement('div');
                 g.className = 'glitter';
                 g.innerHTML = "✦";
                 g.style.left = Math.random() * 100 + "vw";
                 g.style.top = "-20px";
+                g.style.color = cores[Math.floor(Math.random() * cores.length)];
                 g.style.fontSize = (Math.random() * 15 + 10) + "px";
-                g.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                g.style.animationDuration = (Math.random() * 3 + 2) + "s";
                 container.appendChild(g);
-                setTimeout(() => g.remove(), 4000);
-            }, 150);
+                setTimeout(() => g.remove(), 5000);
+            }, 100);
         }
 
         function confirmar(vai) {
             const nome = document.getElementById("nomeConvidado").value;
             if(!nome){ alert("Digite seu nome!"); return; }
-            const msg = vai ? `Confirmado ✅ ${nome} na festa da Thaís!` : `${nome} não poderá ir.`;
-            window.open(`https://wa.me/558184378356?text=${encodeURIComponent(msg)}`, "_blank");
+            const numero = "558184378356";
+            let msg = vai ? `Confirmado ✅ ${nome} vai na festa da Thaís!` : `${nome} não poderá ir.`;
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, "_blank");
         }
     </script>
 </body>
