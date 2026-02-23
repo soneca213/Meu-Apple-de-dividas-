@@ -3,171 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convite Interativo - Thaís Vitória</title>
+    <title>17 Anos - Thaís Vitória</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: #f3e5f5; /* Cor de fundo suave caso a imagem demore a carregar */
-            background-image: url('https://i.ibb.co/LzdS8mH/7163.jpg'); /* Sua imagem de fundo */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            height: 100%;
+            overflow: hidden; /* Mantém tudo na tela sem rolar */
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Fundo com a sua imagem original */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.ibb.co/LzdS8mH/7163.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
-            overflow-x: hidden;
+            z-index: -1;
+        }
+
+        /* Conteúdo Principal */
+        .content {
+            height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Estilo do Card do Convite */
-        .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(5px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 350px;
             text-align: center;
-            border: 2px solid #d1c4e9;
-            position: relative;
-            z-index: 10;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2); /* Efeito de vidro bem leve */
         }
 
-        h1 { color: #7b1fa2; font-size: 28px; margin-bottom: 5px; }
-        p { color: #4a148c; margin: 10px 0; }
+        h2 { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 3.5rem; 
+            color: #7b4397; 
+            margin-bottom: -10px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        h1 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 2.2rem; 
+            color: #4a148c; 
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .detalhes {
+            font-size: 1.1rem;
+            color: #5e35b1;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        /* Inputs e Botões */
+        .interacao {
+            width: 100%;
+            max-width: 320px;
+            z-index: 100;
+        }
 
         input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 1px solid #ce93d8;
-            outline: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 1px solid #d1c4e9;
+            margin-bottom: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .btn {
             display: block;
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 8px 0;
-            border-radius: 25px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            transition: 0.3s;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             border: none;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        .btn-mapa { background: #9575cd; color: white; }
-        .btn-sim { background: #66bb6a; color: white; }
-        .btn-nao { background: #ef5350; color: white; }
-        .btn:hover { transform: scale(1.05); }
+        .btn-mapa { background: #9c27b0; color: white; }
+        .btn-sim { background: #4caf50; color: white; }
+        .btn-nao { background: #e91e63; color: white; }
+        .btn:active { transform: scale(0.95); }
 
-        /* --- ANIMAÇÃO DAS BORBOLETAS --- */
+        /* --- BORBOLETAS ANIMADAS --- */
         .butterfly {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* As asas */
-        .butterfly::before, .butterfly::after {
-            content: '';
             position: absolute;
-            top: 0;
-            width: 10px;
-            height: 15px;
-            border-radius: 50% 50% 20% 20%;
-            animation: flap 0.2s infinite alternate;
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 5;
         }
 
-        .butterfly::before {
+        .butterfly .wing {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            border-radius: 50% 50% 10% 40%;
+            animation: flap 0.25s infinite alternate;
+        }
+
+        .butterfly .left {
+            background: var(--c);
             left: 0;
             transform-origin: right;
         }
 
-        .butterfly::after {
-            left: 10px;
+        .butterfly .right {
+            background: var(--c);
+            left: 15px;
             transform-origin: left;
             animation-delay: 0.1s;
+            border-radius: 50% 50% 40% 10%;
         }
 
         @keyframes flap {
             0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(80deg); }
+            100% { transform: rotateY(75deg); }
         }
 
-        @keyframes move {
+        @keyframes fly {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(100px, -100px) rotate(20deg); }
-            50% { transform: translate(200px, 50px) rotate(-20deg); }
-            75% { transform: translate(-100px, 150px) rotate(10deg); }
+            25% { transform: translate(100px, -50px) rotate(20deg); }
+            50% { transform: translate(50px, -150px) rotate(-10deg); }
+            75% { transform: translate(-100px, -50px) rotate(15deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <p>VOCÊ ESTÁ CONVIDADO!</p>
-    <h1>Thaís Vitória</h1>
-    <p>✨ <b>Meus 17 Anos</b> ✨</p>
-    
-    <p>📅 <b>Data:</b> [Insira a Data]<br>
-       ⏰ <b>Hora:</b> [Insira a Hora]</p>
+<div class="bg-container"></div>
 
-    <p>📍 [Nome da Rua e Número]</p>
-    
-    <a href="https://www.google.com/maps" target="_blank" class="btn btn-mapa">📍 VER LOCALIZAÇÃO</a>
+<div class="content">
+    <h2>Meus 17 Anos</h2>
+    <h1>THAÍS VITÓRIA</h1>
 
-    <hr style="border: 0.5px solid #e1bee7; margin: 20px 0;">
+    <div class="detalhes">
+        <p>✨ Você é meu convidado especial! ✨</p>
+        <p>📅 <b>DATA:</b> 00/00/2026</p>
+        <p>⏰ <b>HORA:</b> 19:00h</p>
+        <p>📍 Rua Exemplo, 123 - Bairro</p>
+    </div>
 
-    <p><b>Confirme sua presença:</b></p>
-    <input type="text" id="nomeConvidado" placeholder="Digite seu nome...">
-    
-    <button onclick="confirmar(true)" class="btn btn-sim">✅ SIM, EU VOU!</button>
-    <button onclick="confirmar(false)" class="btn btn-nao">❌ NÃO PODEREI IR</button>
+    <div class="interacao">
+        <button onclick="window.open('https://maps.app.goo.gl/EXEMPLO')" class="btn btn-mapa">📍 VER NO MAPA</button>
+        
+        <input type="text" id="nome" placeholder="Digite seu nome para confirmar">
+        
+        <button onclick="confirmar(true)" class="btn btn-sim">✅ SIM, EU VOU!</button>
+        <button onclick="confirmar(false)" class="btn btn-nao">❌ NÃO PODEREI IR</button>
+    </div>
 </div>
 
 <script>
-    // Gerador de Borboletas Coloridas
-    const colors = ['#e1bee7', '#ce93d8', '#ba68c8', '#f8bbd0', '#b39ddb'];
-    
-    for (let i = 0; i < 12; i++) {
+    // Criar Borboletas Coloridas
+    const colors = ['#ce93d8', '#f8bbd0', '#b39ddb', '#9575cd', '#f48fb1'];
+    for (let i = 0; i < 8; i++) {
         let b = document.createElement('div');
         b.className = 'butterfly';
         let color = colors[Math.floor(Math.random() * colors.length)];
-        
-        // Estilo das asas com cores aleatórias
         b.style.setProperty('--c', color);
-        b.innerHTML = `<style>.b${i}::before, .b${i}::after { background: ${color}; opacity: 0.7; }</style>`;
-        b.classList.add(`b${i}`);
-
-        // Posição inicial aleatória
-        b.style.top = Math.random() * 100 + "vh";
-        b.style.left = Math.random() * 100 + "vw";
         
-        // Movimento aleatório
-        b.style.animation = `move ${Math.random() * 10 + 5}s linear infinite`;
+        b.innerHTML = '<div class="wing left"></div><div class="wing right"></div>';
+        
+        b.style.top = Math.random() * 80 + "vh";
+        b.style.left = Math.random() * 80 + "vw";
+        b.style.animation = `fly ${Math.random() * 10 + 10}s linear infinite`;
         
         document.body.appendChild(b);
     }
 
-    // Função do WhatsApp
+    // Função WhatsApp
     function confirmar(vai) {
-        var nome = document.getElementById('nomeConvidado').value;
-        var telefone = "558189659847";
-        if (nome === "") { alert("Por favor, digite seu nome!"); return; }
+        const nome = document.getElementById('nome').value;
+        const fone = "558189659847";
+        if(!nome) { alert("Por favor, escreva seu nome!"); return; }
 
-        var msg = vai ? 
+        let msg = vai ? 
             `Olá Thaís Vitória, sou ${nome} e estou confirmando para a sua festa!` : 
             `Poxa Thaís, sou ${nome} e não poderei ir para sua festa.`;
 
-        window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://wa.me/${fone}?text=${encodeURIComponent(msg)}`);
     }
 </script>
 
