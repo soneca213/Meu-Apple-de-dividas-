@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>17 Anos - Thaís Vitória</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #7a00ff;
             --secondary: #c400ff;
+            --bg-dark: #12001c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,30 +20,30 @@
             min-height: 100vh;
             background: radial-gradient(circle at center, #2a003f, #12001c);
             font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Container que agrupa envelope + texto abaixo */
-        .main-container {
+        /* Container que agrupa envelope e o texto embaixo */
+        .wrapper-total {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 30px;
-            z-index: 100;
-            transition: opacity 0.6s, transform 0.6s;
+            z-index: 10;
+            transition: all 0.8s ease;
         }
 
-        .main-container.fade-out {
+        .wrapper-total.fade-out {
             opacity: 0;
             transform: scale(0.8);
             pointer-events: none;
         }
 
-        /* ===== ENVELOPE ===== */
-        .envelope-wrapper {
+        /* ENVELOPE */
+        .envelope {
             position: relative;
             width: 280px;
             height: 180px;
@@ -51,104 +53,120 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        .envelope-wrapper::before { /* Aba */
+        /* Aba do Envelope */
+        .envelope::before {
             content: "";
             position: absolute;
-            top: 0; z-index: 2;
+            top: 0; left: 0;
+            z-index: 3;
             border-left: 140px solid transparent;
             border-right: 140px solid transparent;
-            border-top: 90px solid var(--primary);
+            border-top: 100px solid var(--primary);
             transform-origin: top;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .envelope-wrapper::after { /* Corpo */
+        /* Corpo do Envelope */
+        .envelope::after {
             content: "";
             position: absolute;
-            z-index: 1;
+            bottom: 0; left: 0;
+            z-index: 2;
             width: 0; height: 0;
             border-left: 140px solid transparent;
             border-right: 140px solid transparent;
-            border-bottom: 90px solid #4b0082;
-            bottom: 0;
+            border-bottom: 100px solid #4b0082;
         }
 
-        .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 0; }
+        .envelope.open::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
 
-        .texto-abrir {
+        /* Texto abaixo do envelope */
+        .instrucao {
             color: white;
             font-weight: bold;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            text-align: center;
+            text-transform: uppercase;
             text-shadow: 0 0 10px var(--primary);
             animation: piscar 1.5s infinite;
         }
 
         @keyframes piscar {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.95); }
         }
 
-        /* ===== CARTÃO CONVITE ===== */
+        /* CARTÃO DE CONVITE */
         .card-luxo {
-            position: relative;
+            position: absolute;
             display: none;
-            z-index: 2;
-            width: 92%;
+            z-index: 5;
+            width: 90%;
             max-width: 450px;
             max-height: 90vh;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255, 255, 255, 0.96);
             border-radius: 35px;
             padding: 30px 20px;
             flex-direction: column;
             gap: 15px;
             text-align: center;
-            overflow-y: auto;
             border: 3px solid var(--primary);
-            animation: surgir 1s ease-out forwards;
+            box-shadow: 0 0 30px var(--primary);
+            overflow-y: auto;
+            animation: aparecer 1s ease-out forwards;
         }
 
-        @keyframes surgir {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .idade { font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 5px; color: #7b1fa2; }
-        .nome { 
-            font-family: 'Pinyon Script', cursive; font-size: 3.8rem;
+        .nome {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 3.8rem;
             background: linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
-            background-size: 200% auto; color: transparent;
-            -webkit-background-clip: text; background-clip: text;
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
             animation: brilhoNome 4s linear infinite;
         }
-        .infos { font-size: 1.1rem; line-height: 1.5; color: #333; }
+
+        @keyframes brilhoNome { 100% { background-position: 200% center; } }
+
         .infos b { display: block; color: #7b1fa2; font-size: 1.2rem; margin-top: 5px; }
 
-        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; outline: none; width: 100%; }
-        button { padding: 15px; background: #7b1fa2; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
-        .nao-ir { color: #7a00ff; cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
+        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; outline: none; width: 100%; font-family: 'Montserrat', sans-serif; }
+        
+        button { 
+            padding: 16px; background: #7b1fa2; color: white; border: none; 
+            border-radius: 15px; font-weight: 700; cursor: pointer; margin-top: 10px;
+        }
 
-        /* ===== ESTRELAS ===== */
-        #container-estrelas { position: fixed; top:0; left:0; width:100%; height:100%; z-index: 1; pointer-events: none; }
-        .glitter { position: absolute; animation: cair linear infinite; opacity: 0.8; color: #c400ff; }
-        @keyframes cair { to { transform: translateY(110vh) rotate(360deg); } }
+        /* ESTRELAS CADENTES */
+        #sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .star { position: absolute; color: #c400ff; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <audio id="musica" preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="AUD-20260223-WA0003.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="main-container" id="mainContainer">
-        <div class="envelope-wrapper" id="envelope" onclick="abrirTudo()"></div>
-        <div class="texto-abrir">CLIQUE PARA ABRIR</div>
+    <div class="wrapper-total" id="envelopeWrapper" onclick="iniciar()">
+        <div class="envelope" id="envelopeAnim"></div>
+        <div class="instrucao">Clique no envelope para abrir</div>
     </div>
 
-    <div id="container-estrelas"></div>
+    <div id="sky"></div>
 
-    <div class="card-luxo" id="cartao">
-        <p class="idade">17 ANOS</p>
+    <div class="card-luxo" id="convite">
+        <p style="letter-spacing: 5px; color: #7b1fa2; font-weight: bold;">17 ANOS</p>
         <h1 class="nome">Thaís Vitória</h1>
         <p style="font-style: italic; color: #6d4c7d;">"Celebrar a vida é colecionar momentos ao lado de quem amamos."</p>
 
@@ -158,58 +176,62 @@
             📍 <b>RUA DO EVENTO, Nº 00</b>
         </div>
 
-        <input type="text" id="nomeConvidado" placeholder="Seu nome completo">
+        <input type="text" id="nomeConvidado" placeholder="Digite seu nome completo">
         <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
-        <p class="nao-ir" onclick="confirmar(false)">Não poderei ir</p>
+        <p style="color: #7a00ff; cursor: pointer; font-size: 0.8rem; margin-top: 5px;" onclick="confirmar(false)">Não poderei ir</p>
     </div>
 
     <script>
-        function abrirTudo() {
-            const container = document.getElementById('mainContainer');
-            const env = document.getElementById('envelope');
-            const cartao = document.getElementById('cartao');
-            const musica = document.getElementById('musica');
+        function iniciar() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            const env = document.getElementById('envelopeAnim');
+            const card = document.getElementById('convite');
+            const som = document.getElementById('musica');
 
-            // Play imediato na música
-            musica.play();
+            // 1. Toca a música imediatamente
+            som.currentTime = 0;
+            som.play().catch(e => console.log("Aguardando interação para áudio."));
 
-            // Abre a aba
+            // 2. Abre a aba do envelope
             env.classList.add('open');
 
-            // Remove o envelope e mostra o cartão
+            // 3. Transição suave para o convite
             setTimeout(() => {
-                container.classList.add('fade-out');
+                wrapper.classList.add('fade-out');
                 setTimeout(() => {
-                    container.style.display = 'none';
-                    cartao.style.display = 'flex';
-                    soltarEstrelas(); 
+                    wrapper.style.display = 'none';
+                    card.style.display = 'flex';
+                    chuvaDeEstrelas(); // Inicia o efeito visual
                 }, 600);
             }, 800);
         }
 
-        function soltarEstrelas() {
-            const container = document.getElementById('container-estrelas');
-            const cores = ['#6a00ff', '#9c00ff', '#c400ff', '#ffffff'];
+        function chuvaDeEstrelas() {
+            const sky = document.getElementById('sky');
             setInterval(() => {
-                const g = document.createElement('div');
-                g.className = 'glitter';
-                g.innerHTML = "✦";
-                g.style.left = Math.random() * 100 + "vw";
-                g.style.top = "-20px";
-                g.style.color = cores[Math.floor(Math.random() * cores.length)];
-                g.style.fontSize = (Math.random() * 15 + 10) + "px";
-                g.style.animationDuration = (Math.random() * 3 + 2) + "s";
-                container.appendChild(g);
-                setTimeout(() => g.remove(), 5000);
-            }, 100);
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.innerHTML = "✦";
+                s.style.left = Math.random() * 100 + "vw";
+                s.style.top = "-20px";
+                s.style.fontSize = (Math.random() * 15 + 10) + "px";
+                s.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                s.style.opacity = Math.random();
+                sky.appendChild(s);
+                setTimeout(() => s.remove(), 4000);
+            }, 150);
         }
 
         function confirmar(vai) {
             const nome = document.getElementById("nomeConvidado").value;
-            if(!nome){ alert("Digite seu nome!"); return; }
-            const numero = "558184378356";
-            let msg = vai ? `Confirmado ✅ ${nome} vai na festa da Thaís!` : `${nome} não poderá ir.`;
-            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, "_blank");
+            if(!nome){ alert("Por favor, digite seu nome."); return; }
+            
+            const num = "558184378356";
+            const msg = vai ? 
+                `Confirmado! ✅ ${nome} marcará presença nos 17 anos da Thaís Vitória.` : 
+                `Infelizmente ${nome} não poderá comparecer.`;
+            
+            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
         }
     </script>
 </body>
