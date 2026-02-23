@@ -4,218 +4,217 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convite Thaís Vitória</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --roxo-escuro: #4a148c;
-            --roxo-medio: #7b1fa2;
-            --lilas: #e1bee7;
-            --fundo: #fdfbff;
+            --cor-principal: #6d4c7d;
+            --cor-acento: #b39ddb;
+            --branco-transp: rgba(255, 255, 255, 0.85);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
             height: 100%;
-            width: 100%;
-            overflow: hidden;
-            font-family: 'Montserrat', sans-serif;
-            background: var(--fundo);
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #f3e5f5;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
         }
 
-        /* Fundo com as lavandas digitalizadas */
-        .decoracao-fundo {
+        /* --- ESTILO DO ENVELOPE --- */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            z-index: 100;
+            transition: 0.5s;
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #d1c4e9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .envelope:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 110px solid #b39ddb;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .envelope:after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            width: 0;
+            height: 0;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid #d1c4e9;
+            border-left: 150px solid #9575cd;
+            border-right: 150px solid #9575cd;
+        }
+
+        .heart {
+            position: absolute;
+            top: 90px;
+            left: 135px;
+            width: 30px;
+            height: 30px;
+            background: #e91e63;
+            z-index: 3;
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+        .heart:before, .heart:after {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background: #e91e63;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart:before { left: -15px; }
+        .heart:after { top: -15px; }
+
+        /* --- ANIMAÇÃO DE ABRIR --- */
+        .aberto .envelope:before { transform: rotateX(180deg); z-index: 0; }
+        .aberto .heart { opacity: 0; }
+        .aberto { transform: translateY(200px); opacity: 0; pointer-events: none; }
+
+        /* --- ESTILO DO CONVITE (DENTRO DA CARTA) --- */
+        .convite-full {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            background: radial-gradient(circle, rgba(255,255,255,0) 0%, #f3e5f5 100%);
-            pointer-events: none;
+            background-image: 
+                url('https://www.transparentpng.com/download/lavender/vXNfXU-lavender-cut-out.png'), /* Lavandas */
+                url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG5tZ3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3/l41lTfNf6O6O6O6O6/giphy.gif'); /* Borboletas */
+            background-size: 100% auto, cover;
+            background-position: bottom, center;
+            background-repeat: no-repeat, no-repeat;
+            background-color: #fdfbff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50;
+            padding: 20px;
         }
 
-        /* Lavandas no rodapé (Desenhadas via Código) */
-        .lavandas {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 150px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%239575cd' fill-opacity='0.4' d='M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-            background-size: cover;
-            z-index: 2;
-        }
+        .aberto + .convite-full { transform: translateY(0); }
 
-        /* Card do Convite */
-        .convite-card {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 400px;
-            padding: 40px 25px;
-            background: rgba(255, 255, 255, 0.7);
+        .card-branco {
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
-            border: 2px solid var(--lilas);
+            padding: 40px 20px;
             border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(123, 31, 162, 0.1);
-            animation: subir 1.5s ease-out;
+            border: 2px solid var(--cor-acento);
+            max-width: 350px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
-        @keyframes subir {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 { font-family: 'Great Vibes', cursive; color: var(--roxo-medio); font-size: 2.5rem; margin-bottom: 5px; }
-        h1 { font-family: 'Pinyon Script', cursive; color: var(--roxo-escuro); font-size: 3.5rem; margin-bottom: 20px; line-height: 1; }
-
-        .texto { color: var(--roxo-escuro); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 25px; }
-        .texto b { display: block; font-size: 1.2rem; color: var(--roxo-medio); margin: 5px 0; }
-
-        /* Botões e Inputs */
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 30px;
-            border: 1px solid var(--lilas);
-            margin-bottom: 10px;
-            text-align: center;
-            outline: none;
-            font-family: 'Montserrat', sans-serif;
-        }
+        h2.idade { font-family: 'Great Vibes', cursive; color: var(--cor-principal); font-size: 2.5rem; margin: 0; }
+        h1.nome { font-family: 'Pinyon Script', cursive; color: var(--cor-principal); font-size: 3.5rem; margin: 10px 0; }
+        
+        .frase { font-style: italic; color: #555; margin-bottom: 20px; font-size: 0.9rem; }
+        
+        .dados { font-size: 1rem; color: #333; line-height: 1.6; margin-bottom: 20px; }
+        .dados b { color: var(--cor-principal); }
 
         .btn {
             display: block;
             width: 100%;
-            padding: 14px;
-            margin: 8px 0;
+            padding: 12px;
+            margin: 10px 0;
             border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
             border: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .btn-mapa { background: var(--roxo-medio); color: white; }
-        .btn-sim { background: #4caf50; color: white; }
-        .btn-nao { background: transparent; color: #888; border: 1px solid #ddd; }
+        .btn-confirmar { background: #66bb6a; color: white; }
+        .btn-recusar { background: transparent; color: #e91e63; border: 1px solid #e91e63; font-size: 0.7rem; }
+        .btn-mapa { background: var(--cor-principal); color: white; margin-bottom: 15px; }
 
-        /* BORBOLETAS (SVG Dinâmico) */
-        .butterfly {
-            position: absolute;
-            width: 35px;
-            height: 35px;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .wing {
-            fill: #ba68c8;
-            stroke: #4a148c;
-            stroke-width: 0.5;
-            animation: bater-asas 0.2s infinite alternate ease-in-out;
-            transform-origin: center;
-        }
-
-        @keyframes bater-asas {
-            from { transform: scaleX(0.1); }
-            to { transform: scaleX(1); }
-        }
-
-        @keyframes voar {
-            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) rotate(45deg); opacity: 0; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            text-align: center;
+            outline: none;
         }
     </style>
 </head>
 <body>
 
-<div class="decoracao-fundo"></div>
-<div class="lavandas"></div>
-
-<div class="convite-card">
-    <h2>Meus 17 Anos</h2>
-    <h1>Thaís Vitória</h1>
-
-    <div class="texto">
-        VOCÊ É MEU CONVIDADO ESPECIAL!<br><br>
-        📅 <b>25 DE ABRIL DE 2026</b>
-        ⏰ <b>ÀS 19:30 HORAS</b>
-        📍 RUA EXEMPO, Nº 123 - SEU BAIRRO
+    <div class="envelope-wrapper" onclick="abrirCarta(this)">
+        <div class="envelope">
+            <div class="heart"></div>
+        </div>
+        <p style="text-align: center; color: #7b1fa2; font-weight: bold; margin-top: 20px;">Toque para abrir 💌</p>
     </div>
 
-    <button onclick="window.open('https://maps.google.com')" class="btn btn-mapa">📍 VER LOCALIZAÇÃO NO MAPA</button>
-    
-    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+    <div class="convite-full">
+        <div class="card-branco">
+            <h2 class="idade">17 Anos</h2>
+            <h1 class="nome">Thaís Vitória</h1>
+            
+            <p class="frase">"A vida é uma celebração e cada momento é um presente. Venha comemorar comigo!"</p>
 
-    <input type="text" id="nomeConvidado" placeholder="Digite seu nome completo">
-    <button onclick="enviar(true)" class="btn btn-sim">✅ SIM, EU VOU!</button>
-    <button onclick="enviar(false)" class="btn btn-nao">❌ NÃO PODEREI IR</button>
-</div>
+            <div class="dados">
+                📍 <b>LOCAL:</b> Rua Exemplo, 123, Bairro<br>
+                📅 <b>DATA:</b> 25 de Abril de 2026<br>
+                ⏰ <b>HORA:</b> 19:30h
+            </div>
 
-<script>
-    // Gerador de Borboletas
-    function criarBorboleta() {
-        const b = document.createElement('div');
-        b.className = 'butterfly';
-        const cores = ['#ce93d8', '#f8bbd0', '#b39ddb', '#ba68c8'];
-        const cor = cores[Math.floor(Math.random() * cores.length)];
+            <button onclick="window.open('https://www.google.com/maps')" class="btn btn-mapa">📍 VER LOCALIZAÇÃO</button>
+            
+            <input type="text" id="nome" placeholder="Digite seu nome completo">
+            <button onclick="enviar(true)" class="btn btn-confirmar">Confirmar Presença</button>
+            <button onclick="enviar(false)" class="btn btn-recusar">Infelizmente não poderei ir</button>
+        </div>
+    </div>
 
-        b.innerHTML = `
-            <svg viewBox="0 0 100 100">
-                <path class="wing" fill="${cor}" d="M50 50 Q70 10 90 40 Q90 70 50 60 Q10 70 10 40 Q30 10 50 50" />
-            </svg>
-        `;
-
-        // Posição Inicial (perto das flores no rodapé)
-        b.style.left = Math.random() * 100 + "vw";
-        b.style.bottom = "0vh";
-
-        // Direção do voo
-        const dx = (Math.random() - 0.5) * 600;
-        const dy = -(Math.random() * 800 + 200);
-        b.style.setProperty('--dx', dx + "px");
-        b.style.setProperty('--dy', dy + "px");
-
-        const duracao = Math.random() * 6 + 6;
-        b.style.animation = `voar ${duracao}s linear forwards`;
-
-        document.body.appendChild(b);
-        setTimeout(() => b.remove(), duracao * 1000);
-    }
-
-    // Cria borboletas em intervalos
-    setInterval(criarBorboleta, 1500);
-    for(let i=0; i<6; i++) criarBorboleta(); // Começa com algumas
-
-    // Função WhatsApp
-    function enviar(confirmou) {
-        const nome = document.getElementById('nomeConvidado').value;
-        const fone = "558189659847";
-        
-        if(!nome) {
-            alert("Por favor, digite seu nome.");
-            return;
+    <script>
+        function abrirCarta(el) {
+            el.classList.add('aberto');
         }
 
-        const msg = confirmou ? 
-            `Olá Thaís Vitória, sou ${nome} e estou confirmando para a sua festa!` : 
-            `Poxa Thaís, sou ${nome} e não poderei ir para sua festa.`;
+        function enviar(confirmou) {
+            const nome = document.getElementById('nome').value;
+            const fone = "558189659847";
+            
+            if(!nome) {
+                alert("Por favor, digite seu nome!");
+                return;
+            }
 
-        window.open(`https://wa.me/${fone}?text=${encodeURIComponent(msg)}`);
-    }
-</script>
+            const msg = confirmou ? 
+                `Olá Thaís Vitória, sou ${nome} e estou confirmando para a sua festa!` : 
+                `Poxa Thaís, sou ${nome} e não poderei ir para sua festa.`;
 
+            window.open(`https://wa.me/${fone}?text=${encodeURIComponent(msg)}`);
+        }
+    </script>
 </body>
 </html>
