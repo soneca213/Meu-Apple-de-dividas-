@@ -6,233 +6,220 @@
     <title>17 Anos - Thaís Vitória</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
             --primary: #7a00ff;
             --secondary: #c400ff;
-            --bg-dark: #12001c;
+            --gold: #ffd700;
+            --bg-dark: #0a0014;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             min-height: 100vh;
-            background: radial-gradient(circle at center, #2a003f, #12001c);
+            background: radial-gradient(circle at center, #1e0030, #0a0014);
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: white;
         }
 
-        /* Container que agrupa envelope e o texto embaixo */
-        .wrapper-total {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-            z-index: 10;
-            transition: all 0.8s ease;
-        }
-
-        .wrapper-total.fade-out {
-            opacity: 0;
-            transform: scale(0.8);
+        /* Fundo de Estrelas */
+        #stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
             pointer-events: none;
         }
 
-        /* ENVELOPE */
-        .envelope {
+        .wrapper-total {
             position: relative;
-            width: 280px;
-            height: 180px;
-            background-color: #3d005e;
-            cursor: pointer;
-            perspective: 1000px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Aba do Envelope */
+        /* ENVELOPE 3D */
+        .envelope-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 200px;
+            background: var(--primary);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .envelope:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+
+        /* Aba Superior */
         .envelope::before {
             content: "";
             position: absolute;
-            top: 0; left: 0;
-            z-index: 3;
-            border-left: 140px solid transparent;
-            border-right: 140px solid transparent;
-            border-top: 100px solid var(--primary);
+            top: 0; z-index: 4;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 110px solid #5a00bd;
             transform-origin: top;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Corpo do Envelope */
-        .envelope::after {
-            content: "";
-            position: absolute;
-            bottom: 0; left: 0;
-            z-index: 2;
-            width: 0; height: 0;
-            border-left: 140px solid transparent;
-            border-right: 140px solid transparent;
-            border-bottom: 100px solid #4b0082;
+            transition: transform 0.5s 0.3s;
         }
 
         .envelope.open::before {
             transform: rotateX(180deg);
-            z-index: 0;
+            z-index: 1;
         }
 
-        /* Texto abaixo do envelope */
-        .instrucao {
-            color: white;
-            font-weight: bold;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            text-align: center;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px var(--primary);
-            animation: piscar 1.5s infinite;
-        }
-
-        @keyframes piscar {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.95); }
-        }
-
-        /* CARTÃO DE CONVITE */
-        .card-luxo {
+        /* O CARTÃO INTERNO (O Pulo do Gato) */
+        .card {
             position: absolute;
-            display: none;
-            z-index: 5;
-            width: 90%;
-            max-width: 450px;
-            max-height: 90vh;
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 35px;
-            padding: 30px 20px;
+            bottom: 10px;
+            left: 10px;
+            width: 300px;
+            height: 180px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
             flex-direction: column;
-            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: transform 0.8s 0.6s, opacity 0.5s;
+            z-index: 2;
             text-align: center;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 30px var(--primary);
-            overflow-y: auto;
-            animation: aparecer 1s ease-out forwards;
         }
 
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(50px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .envelope.open .card {
+            transform: translateY(-150px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .nome {
+        .card h2 {
             font-family: 'Pinyon Script', cursive;
-            font-size: 3.8rem;
-            background: linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            animation: brilhoNome 4s linear infinite;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
         }
 
-        @keyframes brilhoNome { 100% { background-position: 200% center; } }
+        .card p { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
 
-        .infos b { display: block; color: #7b1fa2; font-size: 1.2rem; margin-top: 5px; }
-
-        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; outline: none; width: 100%; font-family: 'Montserrat', sans-serif; }
-        
-        button { 
-            padding: 16px; background: #7b1fa2; color: white; border: none; 
-            border-radius: 15px; font-weight: 700; cursor: pointer; margin-top: 10px;
+        /* Texto de Instrução */
+        .instruction {
+            margin-top: 40px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            animation: pulse 2s infinite;
         }
 
-        /* ESTRELAS CADENTES */
-        #sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .star { position: absolute; color: #c400ff; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; text-shadow: 0 0 10px var(--secondary); }
+        }
+
+        .hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <audio id="musica" preload="auto">
-        <source src="AUD-20260223-WA0003.mp3" type="audio/mpeg">
-    </audio>
+    <canvas id="stars"></canvas>
 
-    <div class="wrapper-total" id="envelopeWrapper" onclick="iniciar()">
-        <div class="envelope" id="envelopeAnim"></div>
-        <div class="instrucao">Clique no envelope para abrir</div>
-    </div>
-
-    <div id="sky"></div>
-
-    <div class="card-luxo" id="convite">
-        <p style="letter-spacing: 5px; color: #7b1fa2; font-weight: bold;">17 ANOS</p>
-        <h1 class="nome">Thaís Vitória</h1>
-        <p style="font-style: italic; color: #6d4c7d;">"Celebrar a vida é colecionar momentos ao lado de quem amamos."</p>
-
-        <div class="infos">
-            📅 <b>25 DE ABRIL DE 2026</b>
-            ⏰ <b>ÀS 19:30 HORAS</b>
-            📍 <b>RUA DO EVENTO, Nº 00</b>
+    <div class="wrapper-total" id="mainWrapper">
+        <div class="envelope-wrapper" onclick="openEnvelope()">
+            <div class="envelope" id="envelope">
+                <div class="card">
+                    <h2>Thaís Vitória</h2>
+                    <p>My 17th Birthday</p>
+                    <small style="margin-top: 10px; color: #ccc;">2026 • Save the Date</small>
+                </div>
+            </div>
         </div>
-
-        <input type="text" id="nomeConvidado" placeholder="Digite seu nome completo">
-        <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
-        <p style="color: #7a00ff; cursor: pointer; font-size: 0.8rem; margin-top: 5px;" onclick="confirmar(false)">Não poderei ir</p>
+        <p class="instruction" id="instruction">CLIQUE PARA ABRIR</p>
     </div>
 
     <script>
-        function iniciar() {
-            const wrapper = document.getElementById('envelopeWrapper');
-            const env = document.getElementById('envelopeAnim');
-            const card = document.getElementById('convite');
-            const som = document.getElementById('musica');
+        // 1. Efeito de Estrelas no Fundo
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            // 1. Toca a música imediatamente
-            som.currentTime = 0;
-            som.play().catch(e => console.log("Aguardando interação para áudio."));
+        const stars = Array.from({ length: 150 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 1.5,
+            opacity: Math.random()
+        }));
 
-            // 2. Abre a aba do envelope
-            env.classList.add('open');
-
-            // 3. Transição suave para o convite
-            setTimeout(() => {
-                wrapper.classList.add('fade-out');
-                setTimeout(() => {
-                    wrapper.style.display = 'none';
-                    card.style.display = 'flex';
-                    chuvaDeEstrelas(); // Inicia o efeito visual
-                }, 600);
-            }, 800);
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+                s.opacity += (Math.random() - 0.5) * 0.05;
+                if(s.opacity < 0) s.opacity = 0;
+                if(s.opacity > 1) s.opacity = 1;
+            });
+            requestAnimationFrame(drawStars);
         }
+        drawStars();
 
-        function chuvaDeEstrelas() {
-            const sky = document.getElementById('sky');
-            setInterval(() => {
-                const s = document.createElement('div');
-                s.className = 'star';
-                s.innerHTML = "✦";
-                s.style.left = Math.random() * 100 + "vw";
-                s.style.top = "-20px";
-                s.style.fontSize = (Math.random() * 15 + 10) + "px";
-                s.style.animationDuration = (Math.random() * 2 + 2) + "s";
-                s.style.opacity = Math.random();
-                sky.appendChild(s);
-                setTimeout(() => s.remove(), 4000);
-            }, 150);
-        }
-
-        function confirmar(vai) {
-            const nome = document.getElementById("nomeConvidado").value;
-            if(!nome){ alert("Por favor, digite seu nome."); return; }
+        // 2. Lógica de Abertura e Persistência
+        function openEnvelope() {
+            const env = document.getElementById('envelope');
+            const inst = document.getElementById('instruction');
             
-            const num = "558184378356";
-            const msg = vai ? 
-                `Confirmado! ✅ ${nome} marcará presença nos 17 anos da Thaís Vitória.` : 
-                `Infelizmente ${nome} não poderá comparecer.`;
-            
-            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
+            if(!env.classList.contains('open')) {
+                env.classList.add('open');
+                inst.classList.add('hidden');
+                
+                // Salva no navegador que já abriu
+                localStorage.setItem('thais_convite_aberto', 'true');
+
+                // Explosão de Confetes Luxuosa
+                const count = 200;
+                const defaults = { origin: { y: 0.7 }, zIndex: 999 };
+
+                function fire(particleRatio, opts) {
+                    confetti({
+                        ...defaults,
+                        ...opts,
+                        particleCount: Math.floor(count * particleRatio),
+                        colors: ['#7a00ff', '#ffd700', '#ffffff']
+                    });
+                }
+
+                fire(0.25, { spread: 26, startVelocity: 55 });
+                fire(0.2, { spread: 60 });
+                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            }
         }
+
+        // 3. Checar se já foi aberto ao recarregar (Persistência)
+        window.onload = () => {
+            if(localStorage.getItem('thais_convite_aberto') === 'true') {
+                console.log("Bem-vinda de volta!");
+                // Aqui você pode decidir se quer que ele já comece aberto
+                // ou se apenas mostra uma mensagem diferente.
+            }
+        };
     </script>
 </body>
 </html>
