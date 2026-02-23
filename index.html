@@ -1,296 +1,154 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>17 Anos - Thaís Vitória</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>17 Anos - Thaís Vitória</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #7a00ff; --secondary: #c400ff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #2a003f, #12001c);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+        /* Container Envelope + Texto */
+        .main-container {
+            display: flex; flex-direction: column; align-items: center; gap: 25px; z-index: 100;
+            transition: all 0.6s ease;
+        }
 
-<style>
-:root {
-    --primary: #7a00ff;
-    --secondary: #c400ff;
-}
+        .envelope-wrapper {
+            position: relative; width: 280px; height: 180px; background-color: #3d005e;
+            cursor: pointer; perspective: 1000px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+        /* Aba do envelope */
+        .envelope-wrapper::before {
+            content: ""; position: absolute; top: 0; z-index: 2;
+            border-left: 140px solid transparent; border-right: 140px solid transparent;
+            border-top: 90px solid var(--primary); transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-body {
-    min-height:100vh;
-    background: radial-gradient(circle at center, #2a003f, #12001c);
-    font-family:'Montserrat', sans-serif;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-}
+        /* Corpo do envelope */
+        .envelope-wrapper::after {
+            content: ""; position: absolute; z-index: 1; width: 0; height: 0;
+            border-left: 140px solid transparent; border-right: 140px solid transparent;
+            border-bottom: 90px solid #4b0082; bottom: 0;
+        }
 
-/* Player escondido */
-#youtube-player { display:none; }
+        .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 0; }
+        .main-container.fade-out { opacity: 0; transform: scale(0.7); pointer-events: none; }
 
-/* ===== ENVELOPE ===== */
-.envelope-wrapper {
-    position:relative;
-    width:300px;
-    height:200px;
-    background-color:#3d005e;
-    cursor:pointer;
-    z-index:100;
-    transition:transform 0.6s, opacity 0.6s;
-    perspective:1000px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.8);
-}
+        .texto-abrir {
+            color: white; font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;
+            text-shadow: 0 0 10px var(--primary); animation: piscar 1.2s infinite;
+        }
 
-.envelope-wrapper::before {
-    content:"";
-    position:absolute;
-    top:0;
-    z-index:2;
-    border-left:150px solid transparent;
-    border-right:150px solid transparent;
-    border-top:100px solid var(--primary);
-    transform-origin:top;
-    transition:transform 0.8s ease-in-out;
-}
+        @keyframes piscar { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-.envelope-wrapper::after {
-    content:"";
-    position:absolute;
-    z-index:1;
-    width:0;
-    height:0;
-    border-left:150px solid transparent;
-    border-right:150px solid transparent;
-    border-bottom:100px solid #4b0082;
-    bottom:0;
-}
+        /* Cartão Convite */
+        .card-luxo {
+            position: absolute; display: none; z-index: 2; width: 92%; max-width: 450px;
+            background: rgba(255,255,255,0.96); border-radius: 35px; padding: 30px 20px;
+            flex-direction: column; gap: 15px; text-align: center; border: 3px solid var(--primary);
+            animation: surgir 0.8s ease-out forwards;
+        }
 
-.envelope-wrapper.open::before {
-    transform:rotateX(180deg);
-    z-index:0;
-}
+        @keyframes surgir { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
-.envelope-wrapper.fade-out {
-    opacity:0;
-    transform:scale(0.5);
-    pointer-events:none;
-}
+        .nome { 
+            font-family: 'Pinyon Script', cursive; font-size: 3.5rem;
+            background: linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
+            background-size: 200% auto; color: transparent; -webkit-background-clip: text;
+        }
 
-/* TEXTO ABAIXO */
-#textoAbrir {
-    margin-top:20px;
-    color:white;
-    font-weight:bold;
-    letter-spacing:3px;
-    animation:piscar 1.5s infinite;
-}
+        .infos b { display: block; color: #7b1fa2; margin-top: 5px; }
+        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; width: 100%; outline: none; }
+        button { padding: 15px; background: #7b1fa2; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-@keyframes piscar {
-    0%,100% { opacity:1; }
-    50% { opacity:0.4; }
-}
-
-/* ===== CARTÃO ===== */
-.card-luxo {
-    position:relative;
-    display:none;
-    z-index:2;
-    width:92%;
-    max-width:500px;
-    max-height:90vh;
-    background:rgba(255,255,255,0.95);
-    border-radius:35px;
-    padding:35px 25px;
-    flex-direction:column;
-    gap:20px;
-    text-align:center;
-    overflow-y:auto;
-    border:3px solid var(--primary);
-    animation:surgir 1.2s ease-out forwards, brilhoRoxo 3s infinite;
-}
-
-@keyframes surgir {
-    from { opacity:0; transform:translateY(50px) scale(0.9); }
-    to { opacity:1; transform:translateY(0) scale(1); }
-}
-
-.idade {
-    font-family:'Playfair Display', serif;
-    font-size:1.6rem;
-    letter-spacing:6px;
-    color:#7b1fa2;
-}
-
-.nome {
-    font-family:'Pinyon Script', cursive;
-    font-size:4rem;
-    background:linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
-    background-size:200% auto;
-    color:transparent;
-    -webkit-background-clip:text;
-    background-clip:text;
-    animation:brilhoNome 4s linear infinite;
-}
-
-@keyframes brilhoNome {
-    to { background-position:200% center; }
-}
-
-.frase { font-style:italic; font-size:1rem; color:#6d4c7d; }
-
-.infos { font-size:1.1rem; line-height:1.6; color:#333; }
-.infos b { display:block; color:#7b1fa2; font-size:1.3rem; }
-
-input {
-    padding:12px;
-    border:none;
-    border-bottom:2px solid #aa00ff;
-    background:transparent;
-    text-align:center;
-    outline:none;
-}
-
-button {
-    padding:15px;
-    background:#7b1fa2;
-    color:white;
-    border:none;
-    border-radius:12px;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover { background:#9c00ff; }
-
-.nao-ir {
-    color:#7a00ff;
-    cursor:pointer;
-    font-size:0.9rem;
-    font-weight:600;
-}
-
-/* ESTRELAS */
-#container-estrelas {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:1;
-    pointer-events:none;
-}
-
-.glitter {
-    position:absolute;
-    animation:cair linear infinite;
-    opacity:0.8;
-}
-
-@keyframes cair {
-    to { transform:translateY(110vh) rotate(360deg); }
-}
-
-@keyframes brilhoRoxo {
-    0%,100% { box-shadow:0 0 20px #7a00ff; }
-    50% { box-shadow:0 0 40px #c400ff; }
-}
-</style>
+        /* Estrelas */
+        #container-estrelas { position: fixed; top:0; left:0; width:100%; height:100%; z-index: 1; pointer-events: none; }
+        .glitter { position: absolute; animation: cair linear infinite; color: #c400ff; }
+        @keyframes cair { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
 </head>
 <body>
 
-<div id="youtube-player"></div>
+    <audio id="musica" preload="auto">
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
 
-<div class="envelope-wrapper" id="envelope" onclick="abrirTudo()"></div>
-<p id="textoAbrir">CLIQUE PARA ABRIR</p>
-
-<div id="container-estrelas"></div>
-
-<div class="card-luxo" id="cartao">
-    <p class="idade">17 ANOS</p>
-    <h1 class="nome">Thaís Vitória</h1>
-    <p class="frase">"Celebrar a vida é colecionar momentos ao lado de quem amamos."</p>
-
-    <div class="infos">
-        📅 <b>25 DE ABRIL DE 2026</b>
-        ⏰ <b>ÀS 19:30 HORAS</b>
-        📍 <b>RUA DO EVENTO, Nº 00</b>
+    <div class="main-container" id="mainContainer" onclick="abrirTudo()">
+        <div class="envelope-wrapper" id="envelope"></div>
+        <div class="texto-abrir">CLIQUE NO ENVELOPE PARA ABRIR</div>
     </div>
 
-    <input type="text" id="nomeConvidado" placeholder="Seu nome completo">
-    <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
-    <p class="nao-ir" onclick="confirmar(false)">Não poderei ir</p>
-</div>
+    <div id="container-estrelas"></div>
 
-<script>
-var player;
+    <div class="card-luxo" id="cartao">
+        <p style="letter-spacing: 5px; color: #7b1fa2;">17 ANOS</p>
+        <h1 class="nome">Thaís Vitória</h1>
+        <div class="infos">
+            📅 <b>25 DE ABRIL DE 2026</b>
+            ⏰ <b>ÀS 19:30 HORAS</b>
+            📍 <b>RUA DO EVENTO, Nº 00</b>
+        </div>
+        <input type="text" id="nomeConvidado" placeholder="Seu nome completo">
+        <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
+        <p style="color: #7a00ff; cursor: pointer; font-size: 0.8rem;" onclick="confirmar(false)">Não poderei ir</p>
+    </div>
 
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-        height:'0',
-        width:'0',
-        videoId:'RAQmKOsonhc'
-    });
-}
+    <script>
+        function abrirTudo() {
+            const container = document.getElementById('mainContainer');
+            const env = document.getElementById('envelope');
+            const cartao = document.getElementById('cartao');
+            const musica = document.getElementById('musica');
 
-var tag = document.createElement('script');
-tag.src="https://www.youtube.com/iframe_api";
-document.body.appendChild(tag);
+            // Garante que o som toque do início
+            musica.currentTime = 0;
+            musica.play().catch(e => console.log("O navegador bloqueou o som inicial."));
 
-function abrirTudo() {
-    const env = document.getElementById('envelope');
-    const cartao = document.getElementById('cartao');
-    const texto = document.getElementById('textoAbrir');
+            env.classList.add('open');
 
-    if(player && typeof player.playVideo === "function"){
-        player.playVideo();
-    }
+            setTimeout(() => {
+                container.classList.add('fade-out');
+                setTimeout(() => {
+                    container.style.display = 'none';
+                    cartao.style.display = 'flex';
+                    soltarEstrelas(); 
+                }, 600);
+            }, 800);
+        }
 
-    texto.style.display="none";
-    env.classList.add('open');
+        function soltarEstrelas() {
+            const container = document.getElementById('container-estrelas');
+            setInterval(() => {
+                const g = document.createElement('div');
+                g.className = 'glitter';
+                g.innerHTML = "✦";
+                g.style.left = Math.random() * 100 + "vw";
+                g.style.top = "-20px";
+                g.style.fontSize = (Math.random() * 15 + 10) + "px";
+                g.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                container.appendChild(g);
+                setTimeout(() => g.remove(), 4000);
+            }, 150);
+        }
 
-    setTimeout(()=>{
-        env.classList.add('fade-out');
-        setTimeout(()=>{
-            env.style.display='none';
-            cartao.style.display='flex';
-            document.body.style.overflowY='auto';
-            soltarEstrelas();
-        },600);
-    },800);
-}
-
-function soltarEstrelas(){
-    const container=document.getElementById('container-estrelas');
-    const cores=['#6a00ff','#9c00ff','#c400ff','#ffffff'];
-
-    setInterval(()=>{
-        const g=document.createElement('div');
-        g.className='glitter';
-        g.innerHTML="✦";
-        g.style.left=Math.random()*100+"vw";
-        g.style.top="-20px";
-        g.style.color=cores[Math.floor(Math.random()*cores.length)];
-        g.style.fontSize=(Math.random()*15+10)+"px";
-        g.style.animationDuration=(Math.random()*3+3)+"s";
-        container.appendChild(g);
-        setTimeout(()=>g.remove(),6000);
-    },150);
-}
-
-function confirmar(vai){
-    const nome=document.getElementById("nomeConvidado").value;
-    if(!nome){ alert("Digite seu nome antes de confirmar."); return; }
-
-    const numero="558184378356";
-    let mensagem = vai ?
-    `Confirmado ✅ ${nome} estará presente na festa da Thaís Vitória!` :
-    `${nome} infelizmente não poderá comparecer à festa.`;
-
-    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`,"_blank");
-}
-</script>
-
+        function confirmar(vai) {
+            const nome = document.getElementById("nomeConvidado").value;
+            if(!nome){ alert("Digite seu nome!"); return; }
+            const msg = vai ? `Confirmado ✅ ${nome} na festa da Thaís!` : `${nome} não poderá ir.`;
+            window.open(`https://wa.me/558184378356?text=${encodeURIComponent(msg)}`, "_blank");
+        }
+    </script>
 </body>
 </html>
