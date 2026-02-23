@@ -1,189 +1,219 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convite Especial</title>
-
-<style>
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-}
-
-/* Container com perspectiva */
-.container {
-    perspective: 1200px;
-}
-
-/* Carta */
-.card {
-    width: 340px;
-    height: 230px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 1.5s ease;
-    cursor: pointer;
-}
-
-.card.open {
-    transform: rotateY(180deg);
-}
-
-/* Frente e Verso */
-.front, .back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-shadow: 0 0 25px rgba(0,0,0,0.5);
-}
-
-/* Frente */
-.front {
-    background: #ffffff;
-    color: #333;
-    font-size: 18px;
-    position: relative;
-}
-
-/* Selo coração */
-.selo {
-    position: absolute;
-    bottom: 20px;
-    width: 70px;
-    height: 70px;
-    background: crimson;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 35px;
-    box-shadow: 0 0 15px rgba(255,0,0,0.7);
-    animation: pulse 1.5s infinite;
-}
-
-/* Pulsar selo */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-    100% { transform: scale(1); }
-}
-
-/* Verso */
-.back {
-    background: #ffffff;
-    transform: rotateY(180deg);
-    padding: 20px;
-    text-align: center;
-}
-
-/* Nome brilhando */
-.nome {
-    font-size: 30px;
-    color: #ff4da6;
-    text-shadow: 
-        0 0 5px #ff4da6,
-        0 0 10px #ff4da6,
-        0 0 20px #ff66cc,
-        0 0 40px #ff66cc;
-    animation: brilho 2s infinite alternate;
-}
-
-@keyframes brilho {
-    from { text-shadow: 0 0 5px #ff4da6; }
-    to { text-shadow: 0 0 30px #ff66cc; }
-}
-
-/* Estrelas */
-.star {
-    position: fixed;
-    top: -10px;
-    color: gold;
-    font-size: 18px;
-    pointer-events: none;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh);
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-    <div class="card" id="card">
-        
-        <div class="front">
-            💌 Clique para abrir
-            <div class="selo">❤️</div>
-        </div>
-
-        <div class="back">
-            <h1>Convite Especial</h1>
-            <h2 class="nome">Thais Vitória</h2>
-            <p>Você é convidada para um momento inesquecível ✨</p>
-        </div>
-
-    </div>
-</div>
-
-<script>
-const card = document.getElementById("card");
-let aberto = false;
-let estrelasAtivas = false;
-
-card.addEventListener("click", () => {
-
-    if (aberto) return;
-    aberto = true;
-
-    // Pequena demora antes de virar
-    setTimeout(() => {
-        card.classList.add("open");
-
-        if (!estrelasAtivas) {
-            estrelasAtivas = true;
-            iniciarEstrelas();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>17 Anos - Thaís Vitória</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7a00ff;
+            --secondary: #c400ff;
         }
 
-    }, 800);
-});
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-function iniciarEstrelas() {
-    setInterval(() => {
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #2a003f, #12001c);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        const star = document.createElement("div");
-        star.classList.add("star");
-        star.innerHTML = "⭐";
+        /* Player escondido */
+        #youtube-player { display: none; }
 
-        star.style.left = Math.random() * window.innerWidth + "px";
-        star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        /* ===== ENVELOPE ===== */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #3d005e;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.6s, opacity 0.6s;
+            perspective: 1000px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
 
-        document.body.appendChild(star);
+        .envelope-wrapper::before { /* Aba */
+            content: "";
+            position: absolute;
+            top: 0; z-index: 2;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--primary);
+            transform-origin: top;
+            transition: transform 0.8s ease-in-out;
+        }
 
-        setTimeout(() => {
-            star.remove();
-        }, 5000);
+        .envelope-wrapper::after { /* Corpo */
+            content: "";
+            position: absolute;
+            z-index: 1;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid #4b0082;
+            bottom: 0;
+        }
 
-    }, 250);
-}
-</script>
+        .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 0; }
+        .envelope-wrapper.fade-out { opacity: 0; transform: scale(0.5); pointer-events: none; }
 
+        /* ===== CARTÃO CONVITE ===== */
+        .card-luxo {
+            position: relative;
+            display: none;
+            z-index: 2;
+            width: 92%;
+            max-width: 500px;
+            max-height: 90vh;
+            background: rgba(255,255,255,0.95);
+            border-radius: 35px;
+            padding: 35px 25px;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+            overflow-y: auto;
+            border: 3px solid var(--primary);
+            animation: surgir 1.2s ease-out forwards, brilhoRoxo 3s infinite;
+        }
+
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .idade { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 6px; color: #7b1fa2; }
+        .nome { 
+            font-family: 'Pinyon Script', cursive; font-size: 4rem;
+            background: linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
+            background-size: 200% auto; color: transparent;
+            -webkit-background-clip: text; background-clip: text;
+            animation: brilhoNome 4s linear infinite;
+        }
+        .frase { font-style: italic; font-size: 1rem; color: #6d4c7d; }
+        .infos { font-size: 1.1rem; line-height: 1.6; color: #333; }
+        .infos b { display: block; color: #7b1fa2; font-size: 1.3rem; }
+
+        input { padding: 12px; border: none; border-bottom: 2px solid #aa00ff; background: transparent; text-align: center; outline: none; }
+        button { padding: 15px; background: #7b1fa2; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #9c00ff; }
+        .nao-ir { color: #7a00ff; cursor: pointer; font-size: 0.9rem; font-weight: 600; }
+
+        /* ===== ESTRELAS ===== */
+        #container-estrelas { position: fixed; top:0; left:0; width:100%; height:100%; z-index: 1; pointer-events: none; }
+        .glitter { position: absolute; animation: cair linear infinite; opacity: 0.8; color: #c400ff; }
+        @keyframes cair { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes brilhoRoxo { 0%, 100% { box-shadow: 0 0 20px #7a00ff; } 50% { box-shadow: 0 0 40px #c400ff; } }
+    </style>
+</head>
+<body>
+
+    <div id="youtube-player"></div>
+
+    <div class="envelope-wrapper" id="envelope" onclick="abrirTudo()">
+        <div style="position: absolute; bottom: 20px; width: 100%; text-align: center; z-index: 5; color: white; font-weight: bold; letter-spacing: 2px;">
+            CLIQUE PARA ABRIR
+        </div>
+    </div>
+
+    <div id="container-estrelas"></div>
+
+    <div class="card-luxo" id="cartao">
+        <p class="idade">17 ANOS</p>
+        <h1 class="nome">Thaís Vitória</h1>
+        <p class="frase">"Celebrar a vida é colecionar momentos ao lado de quem amamos."</p>
+
+        <div class="infos">
+            📅 <b>25 DE ABRIL DE 2026</b>
+            ⏰ <b>ÀS 19:30 HORAS</b>
+            📍 <b>RUA DO EVENTO, Nº 00</b>
+        </div>
+
+        <input type="text" id="nomeConvidado" placeholder="Seu nome completo">
+        <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
+        <p class="nao-ir" onclick="confirmar(false)">Não poderei ir</p>
+    </div>
+
+    <script>
+        // Configuração da API do YouTube
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'RAQmKOsonhc', // ID do vídeo que você mandou
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Player carregado e pronto
+        }
+
+        // Carrega a API do YouTube de forma assíncrona
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function abrirTudo() {
+            const env = document.getElementById('envelope');
+            const cartao = document.getElementById('cartao');
+
+            // Toca a música da Pabllo Vittar
+            if (player && player.playVideo) {
+                player.playVideo();
+            }
+
+            // Animação do envelope
+            env.classList.add('open');
+
+            setTimeout(() => {
+                env.classList.add('fade-out');
+                setTimeout(() => {
+                    env.style.display = 'none';
+                    cartao.style.display = 'flex';
+                    document.body.style.overflowY = 'auto';
+                    soltarEstrelas(); 
+                }, 600);
+            }, 800);
+        }
+
+        function soltarEstrelas() {
+            const container = document.getElementById('container-estrelas');
+            const cores = ['#6a00ff', '#9c00ff', '#c400ff', '#ffffff'];
+            setInterval(() => {
+                const g = document.createElement('div');
+                g.className = 'glitter';
+                g.innerHTML = "✦";
+                g.style.left = Math.random() * 100 + "vw";
+                g.style.top = "-20px";
+                g.style.color = cores[Math.floor(Math.random() * cores.length)];
+                g.style.fontSize = (Math.random() * 15 + 10) + "px";
+                g.style.animationDuration = (Math.random() * 3 + 3) + "s";
+                container.appendChild(g);
+                setTimeout(() => g.remove(), 6000);
+            }, 150);
+        }
+
+        function confirmar(vai) {
+            const nome = document.getElementById("nomeConvidado").value;
+            if(!nome){ alert("Digite seu nome antes de confirmar."); return; }
+            const numero = "558184378356";
+            let mensagem = vai ? 
+                `Confirmado ✅ ${nome} estará presente na festa da Thaís Vitória!` : 
+                `${nome} infelizmente não poderá comparecer à festa.`;
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, "_blank");
+        }
+    </script>
 </body>
 </html>
