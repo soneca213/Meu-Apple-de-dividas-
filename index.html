@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thaís Vitória - 17 Anos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Pinyon+Script&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <title>Convite Thaís Vitória</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #6d4c7d;
-            --accent: #b39ddb;
-            --text: #4a148c;
+            --roxo-escuro: #4a148c;
+            --roxo-medio: #7b1fa2;
+            --lilas: #e1bee7;
+            --fundo: #fdfbff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,232 +21,199 @@
             width: 100%;
             overflow: hidden;
             font-family: 'Montserrat', sans-serif;
-            background-color: #fdfbff;
+            background: var(--fundo);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Fundo com a sua imagem original */
-        .background {
+        /* Fundo com as lavandas digitalizadas */
+        .decoracao-fundo {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://i.ibb.co/LzdS8mH/7163.jpg');
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            filter: brightness(1.05);
+            z-index: 1;
+            background: radial-gradient(circle, rgba(255,255,255,0) 0%, #f3e5f5 100%);
+            pointer-events: none;
         }
 
-        /* Overlay suave para dar leitura */
-        .overlay {
+        /* Lavandas no rodapé (Desenhadas via Código) */
+        .lavandas {
             position: absolute;
-            top: 0;
-            left: 0;
+            bottom: 0;
             width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 100%);
+            height: 150px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%239575cd' fill-opacity='0.4' d='M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            z-index: 2;
         }
 
-        /* Conteúdo central */
-        .main-container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around; /* Distribui melhor os elementos na vertical */
-            align-items: center;
-            padding: 40px 20px;
+        /* Card do Convite */
+        .convite-card {
+            position: relative;
             z-index: 10;
-            animation: fadeIn 2.5s ease-in-out;
-        }
-
-        .header h2 {
-            font-family: 'Alex Brush', cursive;
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: -15px;
-        }
-
-        .header h1 {
-            font-family: 'Pinyon Script', cursive;
-            font-size: 3.8rem;
-            color: var(--text);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .details {
-            text-align: center;
-            color: var(--text);
-            font-size: 0.95rem;
-            letter-spacing: 2px;
-            line-height: 2;
-        }
-
-        .details b { color: var(--primary); font-weight: 400; font-size: 1.1rem; }
-
-        /* Estilo dos Botões e Input */
-        .actions {
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .input-name {
-            width: 100%;
+            width: 90%;
+            max-width: 400px;
+            padding: 40px 25px;
             background: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--accent);
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--lilas);
+            border-radius: 15px;
             text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            outline: none;
-            transition: 0.3s;
+            box-shadow: 0 15px 35px rgba(123, 31, 162, 0.1);
+            animation: subir 1.5s ease-out;
         }
 
-        .input-name:focus { border-color: var(--primary); background: white; }
+        @keyframes subir {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { font-family: 'Great Vibes', cursive; color: var(--roxo-medio); font-size: 2.5rem; margin-bottom: 5px; }
+        h1 { font-family: 'Pinyon Script', cursive; color: var(--roxo-escuro); font-size: 3.5rem; margin-bottom: 20px; line-height: 1; }
+
+        .texto { color: var(--roxo-escuro); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 25px; }
+        .texto b { display: block; font-size: 1.2rem; color: var(--roxo-medio); margin: 5px 0; }
+
+        /* Botões e Inputs */
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 1px solid var(--lilas);
+            margin-bottom: 10px;
+            text-align: center;
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+        }
 
         .btn {
             display: block;
             width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 2px; /* Botão mais quadrado fica mais elegante */
+            padding: 14px;
+            margin: 8px 0;
+            border-radius: 30px;
             text-decoration: none;
-            text-transform: uppercase;
+            font-weight: bold;
             font-size: 0.8rem;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
             cursor: pointer;
-            transition: all 0.4s ease;
-            border: 1px solid var(--accent);
+            transition: 0.3s;
         }
 
-        .btn-map { background: transparent; color: var(--text); border: 1px solid var(--text); }
-        .btn-yes { background: var(--primary); color: white; border: none; }
-        .btn-no { background: transparent; color: #888; border: none; font-size: 0.7rem; }
+        .btn-mapa { background: var(--roxo-medio); color: white; }
+        .btn-sim { background: #4caf50; color: white; }
+        .btn-nao { background: transparent; color: #888; border: 1px solid #ddd; }
 
-        .btn:hover { letter-spacing: 4px; opacity: 0.8; }
-
-        /* BORBOLETAS */
+        /* BORBOLETAS (SVG Dinâmico) */
         .butterfly {
             position: absolute;
-            width: 25px;
-            height: 20px;
+            width: 35px;
+            height: 35px;
             z-index: 5;
             pointer-events: none;
         }
 
         .wing {
-            position: absolute;
-            width: 12px;
-            height: 18px;
-            background: var(--color);
-            border-radius: 50% 50% 20% 50%;
-            opacity: 0.6;
-            animation: flap 0.3s infinite alternate ease-in-out;
+            fill: #ba68c8;
+            stroke: #4a148c;
+            stroke-width: 0.5;
+            animation: bater-asas 0.2s infinite alternate ease-in-out;
+            transform-origin: center;
         }
 
-        .wing.right {
-            left: 12px;
-            transform-origin: left;
-            border-radius: 50% 50% 50% 20%;
+        @keyframes bater-asas {
+            from { transform: scaleX(0.1); }
+            to { transform: scaleX(1); }
         }
 
-        .wing.left {
-            transform-origin: right;
-            animation-delay: 0.1s;
-        }
-
-        @keyframes flap {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(70deg); }
-        }
-
-        @keyframes fly {
-            0% { transform: translate(0,0) rotate(0deg); }
-            33% { transform: translate(150px, -200px) rotate(30deg); }
-            66% { transform: translate(-100px, -400px) rotate(-20deg); }
-            100% { transform: translate(0, -600px) rotate(10deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes voar {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) rotate(45deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-<div class="background"></div>
-<div class="overlay"></div>
+<div class="decoracao-fundo"></div>
+<div class="lavandas"></div>
 
-<div class="main-container">
-    <div class="header">
-        <h2>Meus 17 Anos</h2>
-        <h1>Thaís Vitória</h1>
+<div class="convite-card">
+    <h2>Meus 17 Anos</h2>
+    <h1>Thaís Vitória</h1>
+
+    <div class="texto">
+        VOCÊ É MEU CONVIDADO ESPECIAL!<br><br>
+        📅 <b>25 DE ABRIL DE 2026</b>
+        ⏰ <b>ÀS 19:30 HORAS</b>
+        📍 RUA EXEMPO, Nº 123 - SEU BAIRRO
     </div>
 
-    <div class="details">
-        <p>CONVIDO VOCÊ PARA CELEBRAR</p>
-        <p>📅 <b>00 . 00 . 2026</b></p>
-        <p>⏰ <b>ÀS 19:30 HORAS</b></p>
-        <p>📍 RUA NOME DA RUA, Nº 00</p>
-    </div>
+    <button onclick="window.open('https://maps.google.com')" class="btn btn-mapa">📍 VER LOCALIZAÇÃO NO MAPA</button>
+    
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
-    <div class="actions">
-        <button onclick="window.open('https://maps.google.com')" class="btn btn-map">Ver Localização</button>
-        
-        <input type="text" id="guestName" class="input-name" placeholder="Seu nome completo">
-        
-        <button onclick="sendWhatsApp(true)" class="btn btn-yes">Confirmar Presença</button>
-        <button onclick="sendWhatsApp(false)" class="btn btn-no">Infelizmente não poderei ir</button>
-    </div>
+    <input type="text" id="nomeConvidado" placeholder="Digite seu nome completo">
+    <button onclick="enviar(true)" class="btn btn-sim">✅ SIM, EU VOU!</button>
+    <button onclick="enviar(false)" class="btn btn-nao">❌ NÃO PODEREI IR</button>
 </div>
 
 <script>
-    // Criar borboletas voando de baixo para cima
-    const colors = ['#d1c4e9', '#f8bbd0', '#e1bee7', '#b39ddb'];
-    
-    function createButterfly() {
+    // Gerador de Borboletas
+    function criarBorboleta() {
         const b = document.createElement('div');
         b.className = 'butterfly';
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        b.style.setProperty('--color', color);
-        
-        b.innerHTML = '<div class="wing left"></div><div class="wing right"></div>';
-        
-        // Posição inicial na parte de baixo
+        const cores = ['#ce93d8', '#f8bbd0', '#b39ddb', '#ba68c8'];
+        const cor = cores[Math.floor(Math.random() * cores.length)];
+
+        b.innerHTML = `
+            <svg viewBox="0 0 100 100">
+                <path class="wing" fill="${cor}" d="M50 50 Q70 10 90 40 Q90 70 50 60 Q10 70 10 40 Q30 10 50 50" />
+            </svg>
+        `;
+
+        // Posição Inicial (perto das flores no rodapé)
         b.style.left = Math.random() * 100 + "vw";
-        b.style.top = "110vh";
-        
-        // Velocidade e tamanho aleatórios
-        const duration = Math.random() * 8 + 7;
-        b.style.animation = `fly ${duration}s linear infinite`;
-        b.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
-        
+        b.style.bottom = "0vh";
+
+        // Direção do voo
+        const dx = (Math.random() - 0.5) * 600;
+        const dy = -(Math.random() * 800 + 200);
+        b.style.setProperty('--dx', dx + "px");
+        b.style.setProperty('--dy', dy + "px");
+
+        const duracao = Math.random() * 6 + 6;
+        b.style.animation = `voar ${duracao}s linear forwards`;
+
         document.body.appendChild(b);
-        
-        // Remove depois que subir para não pesar o site
-        setTimeout(() => b.remove(), duration * 1000);
+        setTimeout(() => b.remove(), duracao * 1000);
     }
 
-    // Criar uma nova borboleta a cada 2 segundos
-    setInterval(createButterfly, 2000);
-    for(let i=0; i<5; i++) createButterfly(); // Começa com algumas na tela
+    // Cria borboletas em intervalos
+    setInterval(criarBorboleta, 1500);
+    for(let i=0; i<6; i++) criarBorboleta(); // Começa com algumas
 
-    function sendWhatsApp(isComing) {
-        const name = document.getElementById('guestName').value;
-        const phone = "558189659847";
+    // Função WhatsApp
+    function enviar(confirmou) {
+        const nome = document.getElementById('nomeConvidado').value;
+        const fone = "558189659847";
         
-        if(!name) {
-            alert("Por favor, digite seu nome para a confirmação.");
+        if(!nome) {
+            alert("Por favor, digite seu nome.");
             return;
         }
 
-        const text = isComing ? 
-            `Olá Thaís Vitória, sou ${name} e estou confirmando para a sua festa!` : 
-            `Poxa Thaís, sou ${name} e não poderei ir para sua festa.`;
+        const msg = confirmou ? 
+            `Olá Thaís Vitória, sou ${nome} e estou confirmando para a sua festa!` : 
+            `Poxa Thaís, sou ${nome} e não poderei ir para sua festa.`;
 
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`);
+        window.open(`https://wa.me/${fone}?text=${encodeURIComponent(msg)}`);
     }
 </script>
 
