@@ -20,30 +20,28 @@ justify-content:center;
 align-items:center;
 }
 
-/* ===== CENA INICIAL ===== */
+/* ===== CENA DA CARTA ===== */
 #cena-abertura{
 position:fixed;
 width:100%;
 height:100%;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-gap:20px;
-z-index:100;
+flex-direction:column;
 background:#12001c;
-transition:1s ease-in-out;
+z-index:100;
 }
 
 .texto-abrir{
 color:#fff;
-font-size:1rem;
-opacity:0.8;
+margin-top:20px;
+opacity:0.7;
 animation:pulsar 2s infinite;
 }
 
 @keyframes pulsar{
-0%,100%{opacity:0.5;}
+0%,100%{opacity:0.4;}
 50%{opacity:1;}
 }
 
@@ -58,14 +56,15 @@ position:relative;
 width:320px;
 height:210px;
 background:#7b1fa2;
-box-shadow:0 20px 50px rgba(0,0,0,0.4);
 border-radius:0 0 12px 12px;
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
 overflow:hidden;
 }
 
 .tampa{
 position:absolute;
 top:0;
+left:0;
 width:0;
 height:0;
 border-top:115px solid #9c27b0;
@@ -76,33 +75,52 @@ transition:transform 1s ease;
 z-index:3;
 }
 
+.papel{
+position:absolute;
+bottom:-140px;
+left:10%;
+width:80%;
+height:140px;
+background:#ffffff;
+border-radius:8px;
+z-index:1;
+transition:transform 1s ease;
+}
+
+/* animações */
 .envelope-wrapper.aberta .tampa{
 transform:rotateX(180deg);
 }
 
-/* Papel subindo */
-.papel{
-position:absolute;
-bottom:0;
-left:10%;
-width:80%;
-height:140px;
-background:white;
-border-radius:8px;
-transition:0.8s ease;
-z-index:1;
+.envelope-wrapper.aberta .papel{
+transform:translateY(-170px);
 }
 
-.envelope-wrapper.aberta .papel{
-transform:translateY(-120px);
+/* ===== FUNDO ESTRELAS ===== */
+#container-confetes{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+pointer-events:none;
+}
+
+.glitter{
+position:absolute;
+animation:cair linear infinite;
+opacity:0.8;
+}
+
+@keyframes cair{
+0%{transform:translateY(-10vh);}
+100%{transform:translateY(110vh);}
 }
 
 /* ===== CARTÃO ===== */
 .card-luxo{
 display:none;
-opacity:0;
-transform:scale(0.9);
-transition:1s ease;
 position:relative;
 z-index:2;
 width:92%;
@@ -117,14 +135,15 @@ text-align:center;
 overflow-y:auto;
 border:3px solid #7a00ff;
 box-shadow:0 0 25px #7a00ff;
+animation:brilhoRoxo 3s infinite ease-in-out;
 }
 
-.card-luxo.mostrar{
-display:flex;
-opacity:1;
-transform:scale(1);
+@keyframes brilhoRoxo{
+0%,100%{box-shadow:0 0 20px #7a00ff;}
+50%{box-shadow:0 0 45px #c400ff;}
 }
 
+/* textos */
 .idade{
 font-family:'Playfair Display',serif;
 font-size:1.8rem;
@@ -134,13 +153,37 @@ color:#7b1fa2;
 
 .nome{
 font-family:'Pinyon Script',cursive;
-font-size:4rem;
-color:#7b1fa2;
+font-size:4.5rem;
+background:linear-gradient(90deg,#6a00ff,#c400ff,#6a00ff);
+background-size:200% auto;
+color:transparent;
+-webkit-background-clip:text;
+background-clip:text;
+animation:brilhoNome 4s linear infinite;
+}
+
+@keyframes brilhoNome{
+0%{background-position:0% center;}
+100%{background-position:200% center;}
 }
 
 .frase{
+font-family:'Playfair Display',serif;
 font-style:italic;
+font-size:1.1rem;
 color:#6d4c7d;
+}
+
+.infos{
+font-size:1.2rem;
+line-height:1.6;
+}
+
+.infos b{
+display:block;
+color:#7b1fa2;
+font-size:1.4rem;
+margin-bottom:8px;
 }
 
 input{
@@ -164,7 +207,9 @@ cursor:pointer;
 transition:0.3s;
 }
 
-button:hover{background:#9c00ff;}
+button:hover{
+background:#9c00ff;
+}
 
 .nao-ir{
 margin-top:10px;
@@ -177,12 +222,12 @@ font-weight:600;
 
 <body>
 
-<!-- Áudio -->
+<!-- Música animada -->
 <audio id="musica" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6e8b0d8c76.mp3?filename=upbeat-party-11254.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Cena da carta -->
+<!-- Cena carta -->
 <div id="cena-abertura">
 <div class="envelope-wrapper" onclick="abrirCarta()">
 <div class="envelope">
@@ -193,7 +238,8 @@ font-weight:600;
 <p class="texto-abrir">Toque na carta para abrir 💌</p>
 </div>
 
-<!-- Convite -->
+<div id="container-confetes"></div>
+
 <div class="card-luxo">
 <p class="idade">17 ANOS</p>
 <h1 class="nome">Thaís Vitória</h1>
@@ -202,9 +248,9 @@ font-weight:600;
 "Celebrar a vida é colecionar momentos ao lado de quem amamos."
 </p>
 
-<div>
-📅 <b>25 DE ABRIL DE 2026</b><br>
-⏰ <b>ÀS 19:30 HORAS</b><br>
+<div class="infos">
+📅 <b>25 DE ABRIL DE 2026</b>
+⏰ <b>ÀS 19:30 HORAS</b>
 📍 <b>RUA DO EVENTO, Nº 00</b>
 </div>
 
@@ -212,49 +258,53 @@ font-weight:600;
 
 <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
 <p class="nao-ir" onclick="confirmar(false)">Não poderei ir</p>
-
 </div>
 
 <script>
-function abrirCarta(){
-if(navigator.vibrate){navigator.vibrate(100);}
 
-const envelope = document.querySelector(".envelope-wrapper");
-const cena = document.getElementById("cena-abertura");
-const card = document.querySelector(".card-luxo");
-const musica = document.getElementById("musica");
+function abrirCarta(){
+const envelope=document.querySelector(".envelope-wrapper");
+const cena=document.getElementById("cena-abertura");
+const card=document.querySelector(".card-luxo");
+const musica=document.getElementById("musica");
 
 envelope.classList.add("aberta");
 musica.play();
 
 setTimeout(()=>{
-cena.style.opacity="0";
-setTimeout(()=>{
 cena.style.display="none";
-card.classList.add("mostrar");
-},1000);
-},1200);
+card.style.display="flex";
+},2000);
 }
+
+function soltarGlitter(){
+const container=document.getElementById('container-confetes');
+const cores=['#6a00ff','#9c00ff','#c400ff','#e100ff'];
+
+for(let i=0;i<150;i++){
+const g=document.createElement('div');
+g.className='glitter';
+g.innerHTML="✦";
+g.style.left=Math.random()*100+"vw";
+g.style.top="-10vh";
+g.style.color=cores[Math.floor(Math.random()*cores.length)];
+g.style.fontSize=(Math.random()*12+8)+"px";
+g.style.animationDuration=(Math.random()*4+4)+"s";
+container.appendChild(g);
+}
+}
+soltarGlitter();
 
 function confirmar(vai){
-const nome = document.getElementById("nomeConvidado").value;
+const nome=document.getElementById("nomeConvidado").value;
+if(!nome){alert("Digite seu nome antes de confirmar.");return;}
 
-if(!nome){
-alert("Digite seu nome antes de confirmar.");
-return;
-}
+const numero="558184378356";
+let mensagem=vai?
+`Confirmado ✅ ${nome} estará presente na festa da Thaís Vitória!`:
+`${nome} infelizmente não poderá comparecer à festa.`;
 
-const numero = "558184378356";
-
-let mensagem;
-
-if(vai){
-mensagem = `Confirmado ✅ ${nome} estará presente na festa da Thaís Vitória!`;
-}else{
-mensagem = `${nome} infelizmente não poderá comparecer à festa.`;
-}
-
-window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, "_blank");
+window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`,"_blank");
 }
 </script>
 
