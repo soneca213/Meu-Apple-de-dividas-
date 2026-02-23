@@ -2,170 +2,129 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convite Real - Thaís Vitória</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Convite Thaís Vitória</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body, html {
             height: 100%;
             width: 100%;
-            background: #f4eef7;
+            background: #f8f4f9;
             font-family: 'Montserrat', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            overflow: hidden; /* Impede barras de rolagem estranhas */
         }
 
-        /* --- FUNDO DO CONVITE (LAVANDAS E BORBOLETAS) --- */
-        .background-overlay {
+        /* --- CENA DA CARTA (INICIAL) --- */
+        #cena-envelope {
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                url('https://www.transparentpng.com/download/lavender/vXNfXU-lavender-cut-out.png'), /* Lavandas Reais */
-                url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3pueG5tZ3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3/l41lTfNf6O6O6O6O6/giphy.gif'); /* Borboletas Reais */
-            background-position: bottom center, center;
-            background-repeat: no-repeat, repeat;
-            background-size: 100% auto, 300px;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 2s ease-in;
-        }
-
-        /* --- ENVELOPE CHIQUE --- */
-        .envelope-wrapper {
-            position: relative;
-            z-index: 10;
-            cursor: pointer;
-            perspective: 1000px;
-            transition: 1s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            background: #f8f4f9;
+            transition: opacity 0.8s ease, visibility 0.8s;
         }
 
         .envelope {
             position: relative;
-            width: 320px;
-            height: 220px;
+            width: 280px;
+            height: 180px;
             background: #e1bee7;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            cursor: pointer;
         }
 
         .envelope::before {
             content: "";
             position: absolute;
             top: 0;
-            z-index: 5;
-            border-top: 120px solid #b39ddb;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            transform-origin: top;
-            transition: transform 0.8s ease-in-out;
-        }
-
-        .envelope::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
+            border-top: 100px solid #b39ddb;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            transition: 0.5s;
             z-index: 2;
-            width: 0;
-            height: 0;
-            border-top: 110px solid transparent;
-            border-bottom: 110px solid #d1c4e9;
-            border-left: 160px solid #9575cd;
-            border-right: 160px solid #9575cd;
-            border-radius: 0 0 10px 10px;
         }
 
-        .selo {
+        .selo-dourado {
             position: absolute;
-            top: 100px;
+            top: 75px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: gold;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #d4af37, #f9e29c);
             border-radius: 50%;
-            z-index: 10;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 3;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
             color: white;
-            transition: 0.5s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 20px;
         }
 
-        /* --- ANIMAÇÃO DE ABERTURA --- */
-        .aberto .envelope::before { transform: rotateX(180deg); }
-        .aberto .selo { opacity: 0; }
-        .aberto { transform: scale(0.8) translateY(500px); opacity: 0; pointer-events: none; }
-
-        /* --- CONVITE INTERNO --- */
-        .convite-container {
+        /* --- CONVITE EM TELA CHEIA --- */
+        #convite-conteudo {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 1.5s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 5;
-            transform: translateY(100%);
-            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            background-color: white;
         }
 
-        .aberto + .convite-container { transform: translateY(0); }
-        .aberto + .convite-container .background-overlay { opacity: 1; }
-
-        .card-luxo {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            width: 90%;
-            max-width: 380px;
-            padding: 50px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.3); /* Bordas douradas leves */
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .card-luxo::before {
-            content: "";
+        /* Fundo com Lavandas e Borboletas Reais */
+        .background-decor {
             position: absolute;
-            top: 15px; bottom: 15px; left: 15px; right: 15px;
-            border: 1px solid #d1c4e9;
-            border-radius: 15px;
-            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3pueG5tZ3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3/l41lTfNf6O6O6O6O6/giphy.gif'), /* Borboletas */
+                url('https://www.transparentpng.com/download/lavender/vXNfXU-lavender-cut-out.png'); /* Lavandas */
+            background-position: center, bottom center;
+            background-repeat: repeat, no-repeat;
+            background-size: 300px, 100% auto;
+            opacity: 0.6;
+            z-index: 1;
         }
 
-        .idade { font-family: 'Playfair Display', serif; font-size: 1.2rem; letter-spacing: 5px; color: #7b1fa2; margin-bottom: 5px; }
-        .nome { font-family: 'Pinyon Script', cursive; font-size: 4rem; color: #4a148c; line-height: 1; margin: 15px 0; }
+        .card-branco {
+            position: relative;
+            z-index: 5;
+            width: 90%;
+            max-width: 360px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(181, 147, 219, 0.3);
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        }
+
+        .idade { font-family: 'Playfair Display', serif; color: #7b1fa2; letter-spacing: 4px; font-size: 1.1rem; margin-bottom: 10px; }
+        .nome { font-family: 'Pinyon Script', cursive; color: #4a148c; font-size: 3.8rem; margin: 10px 0; }
+        .frase { font-family: 'Playfair Display', serif; font-style: italic; color: #6d4c7d; font-size: 0.85rem; margin-bottom: 25px; }
+
+        .info-box { margin-bottom: 25px; color: #333; font-size: 0.95rem; line-height: 1.8; }
+        .info-box b { color: #7b1fa2; font-weight: 600; }
+
+        /* Botões */
+        .btn-link { color: #7b1fa2; text-decoration: underline; font-size: 0.8rem; cursor: pointer; display: block; margin-bottom: 20px; }
         
-        .frase { font-family: 'Playfair Display', serif; font-style: italic; color: #6d4c7d; font-size: 0.9rem; margin: 20px 0; padding: 0 10px; }
-
-        .infos { margin: 25px 0; font-size: 0.95rem; color: #333; line-height: 1.8; }
-        .infos b { color: #7b1fa2; font-weight: 600; letter-spacing: 1px; }
-
-        /* AÇÕES */
-        .btn-mapa {
-            display: inline-block;
-            background: none;
-            border-bottom: 1px solid #7b1fa2;
-            color: #7b1fa2;
-            text-decoration: none;
-            font-size: 0.8rem;
-            margin-bottom: 30px;
-            padding-bottom: 2px;
-            cursor: pointer;
-        }
-
-        .confirmacao { width: 100%; }
         input {
             width: 100%;
             padding: 12px;
@@ -175,75 +134,73 @@
             text-align: center;
             margin-bottom: 15px;
             outline: none;
-            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
         }
 
-        .btn-confirm {
+        .btn-confirmar {
             width: 100%;
             padding: 15px;
             background: #7b1fa2;
             color: white;
             border: none;
-            border-radius: 5px;
-            letter-spacing: 2px;
+            border-radius: 8px;
             font-weight: 600;
+            letter-spacing: 1px;
             cursor: pointer;
-            margin-bottom: 10px;
-            transition: 0.3s;
         }
 
-        .btn-no {
-            background: none;
-            border: none;
-            color: #999;
-            font-size: 0.7rem;
-            cursor: pointer;
-            text-decoration: underline;
-        }
+        .btn-nao { background: none; border: none; color: #999; margin-top: 10px; font-size: 0.75rem; cursor: pointer; text-decoration: underline; }
+
+        /* Estado após clicar */
+        .envelope-aberto { opacity: 0; visibility: hidden; }
+        .mostrar-convite { visibility: visible !important; opacity: 1 !important; }
+
     </style>
 </head>
 <body>
 
-    <div class="envelope-wrapper" onclick="abrirConvite(this)">
+    <div id="cena-envelope" onclick="abrirCarta()">
         <div class="envelope">
-            <div class="selo">❤</div>
+            <div class="selo-dourado">❤</div>
         </div>
-        <p style="text-align: center; color: #7b1fa2; margin-top: 30px; font-weight: 300; letter-spacing: 2px;">TOQUE PARA ABRIR</p>
+        <p style="margin-top: 30px; color: #7b1fa2; letter-spacing: 2px; font-size: 0.9rem;">TOQUE PARA ABRIR</p>
     </div>
 
-    <div class="convite-container">
-        <div class="background-overlay"></div>
+    <div id="convite-conteudo">
+        <div class="background-decor"></div>
         
-        <div class="card-luxo">
+        <div class="card-branco">
             <p class="idade">17 ANOS</p>
             <h1 class="nome">Thaís Vitória</h1>
             
-            <p class="frase">"Que a felicidade me encontre e me siga sempre. Convido você para celebrar meu aniversário!"</p>
+            <p class="frase">"A vida é um presente e cada momento deve ser celebrado com quem amamos."</p>
 
-            <div class="infos">
-                📅 <b>25 . ABRIL . 2026</b><br>
+            <div class="info-box">
+                📅 <b>25 DE ABRIL DE 2026</b><br>
                 ⏰ <b>ÀS 19:30 HORAS</b><br>
                 📍 <b>RUA NOME DA RUA, Nº 00</b>
             </div>
 
-            <a onclick="window.open('https://maps.google.com')" class="btn-mapa">CLIQUE AQUI PARA VER O LOCAL NO MAPA</a>
+            <span class="btn-link" onclick="window.open('https://maps.google.com')">VER LOCALIZAÇÃO NO MAPA</span>
 
-            <div class="confirmacao">
-                <input type="text" id="nomeUser" placeholder="Seu nome para a lista">
-                <button class="btn-confirm" onclick="enviar(true)">CONFIRMAR PRESENÇA</button>
-                <button class="btn-no" onclick="enviar(false)">Não poderei comparecer</button>
+            <div class="form">
+                <input type="text" id="nome_convidado" placeholder="Seu nome completo">
+                <button class="btn-confirmar" onclick="mandarZap(true)">CONFIRMAR PRESENÇA</button>
+                <button class="btn-nao" onclick="mandarZap(false)">Não poderei ir</button>
             </div>
         </div>
     </div>
 
     <script>
-        function abrirConvite(el) {
-            el.classList.add('aberto');
-            // Som de papel abrindo poderia ser adicionado aqui
+        function abrirCarta() {
+            document.getElementById('cena-envelope').classList.add('envelope-aberto');
+            setTimeout(() => {
+                document.getElementById('convite-conteudo').classList.add('mostrar-convite');
+            }, 500);
         }
 
-        function enviar(vai) {
-            const nome = document.getElementById('nomeUser').value;
+        function mandarZap(confirmou) {
+            const nome = document.getElementById('nome_convidado').value;
             const zap = "558189659847";
             
             if(!nome) {
@@ -251,7 +208,7 @@
                 return;
             }
 
-            const texto = vai ? 
+            const texto = confirmou ? 
                 `Olá Thaís Vitória, sou ${nome} e estou confirmando para a sua festa!` : 
                 `Poxa Thaís, sou ${nome} e não poderei ir para sua festa.`;
 
