@@ -1,223 +1,330 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>17 Anos - Thaís Vitória</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <title>Simulado Premium de Língua Portuguesa</title>
     <style>
         :root {
-            --primary: #7a00ff;
-            --secondary: #c400ff;
+            --primary-color: #2b5c8f;
+            --primary-hover: #1d3f63;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+            --text-muted: #718096;
+            --correct-color: #2f855a;
+            --correct-bg: #f0fff4;
+            --correct-border: #c6f6d5;
+            --incorrect-color: #9b2c2c;
+            --incorrect-bg: #fff5f5;
+            --incorrect-border: #fed7d7;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            min-height: 100vh;
-            background: radial-gradient(circle at center, #2a003f, #12001c);
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 40px 20px;
+            color: var(--text-color);
+            line-height: 1.6;
         }
 
-        /* CONTAINER ENVELOPE */
-        .wrapper-total {
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            margin-bottom: 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #1a202c;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .options-list li {
+            margin-bottom: 12px;
+        }
+
+        .options-list label {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 30px;
-            z-index: 10;
-            transition: all 0.6s ease;
+            padding: 14px 20px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
-        .wrapper-total.fade-out {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
+        .options-list label:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
         }
 
-        .envelope {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background-color: #3d005e;
-            perspective: 1000px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        .options-list input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #fff;
+            margin: 0 14px 0 0;
+            font: inherit;
+            color: var(--primary-color);
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
         }
 
-        .envelope::before {
+        .options-list input[type="radio"]::before {
             content: "";
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 3;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid var(--primary);
-            transform-origin: top;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0.65rem;
+            height: 0.65rem;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--primary-color);
         }
 
-        .envelope::after {
-            content: "";
-            position: absolute;
-            bottom: 0; left: 0;
-            z-index: 2;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 100px solid #4b0082;
+        .options-list input[type="radio"]:checked::before {
+            transform: scale(1);
         }
 
-        .envelope.open::before {
-            transform: rotateX(180deg);
-            z-index: 0;
+        .options-list input[type="radio"]:checked {
+            border-color: var(--primary-color);
         }
 
-        .instrucao {
+        .options-list label.selected-dark {
+            border-color: var(--primary-color);
+            background-color: #ebf8ff;
+        }
+
+        /* Classes de Correção */
+        .options-list label.correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: var(--correct-color) !important;
+            font-weight: 600;
+        }
+
+        .options-list label.incorrect {
+            background-color: var(--incorrect-bg) !important;
+            border-color: var(--incorrect-border) !important;
+            color: var(--incorrect-color) !important;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-color);
             color: white;
-            font-weight: bold;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            text-align: center;
-            text-shadow: 0 0 10px var(--primary);
-            animation: piscar 1.5s infinite;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(43, 92, 143, 0.2);
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 30px;
         }
 
-        @keyframes piscar {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+        .btn-submit:hover {
+            background: var(--primary-hover);
         }
 
-        /* CARTÃO DE CONVITE */
-        .card-luxo {
-            position: absolute;
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        #result {
+            margin-top: 40px;
             display: none;
-            z-index: 5;
-            width: 92%;
-            max-width: 500px;
-            max-height: 90vh;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 35px;
-            padding: 35px 25px;
-            flex-direction: column;
-            gap: 20px;
+        }
+
+        .score-box {
+            font-size: 1.4rem;
+            font-weight: 700;
             text-align: center;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 25px var(--primary);
-            overflow-y: auto;
-            animation: aparecer 1s ease-out forwards;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border-left: 6px solid var(--primary-color);
         }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .idade { font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: 8px; color: #7b1fa2; }
-        .nome {
-            font-family: 'Pinyon Script', cursive; font-size: 4.5rem;
-            background: linear-gradient(90deg, #6a00ff, #c400ff, #6a00ff);
-            background-size: 200% auto; color: transparent;
-            -webkit-background-clip: text; background-clip: text;
-            animation: brilhoNome 4s linear infinite;
-        }
-
-        @keyframes brilhoNome { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-        .frase { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: #6d4c7d; }
-        .infos { font-size: 1.2rem; line-height: 1.6; color: #333; }
-        .infos b { display: block; color: #7b1fa2; font-size: 1.4rem; margin-bottom: 8px; }
-
-        input { padding: 15px; border: none; border-bottom: 3px solid #aa00ff; background: transparent; text-align: center; font-size: 1rem; outline: none; width: 100%; }
-        button { padding: 18px; background: #7b1fa2; color: white; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .nao-ir { margin-top: 10px; color: #7a00ff; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
-
-        /* ESTRELAS */
-        #sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .star { position: absolute; color: #c400ff; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <audio id="musica" preload="auto">
-        <source src="AUD-20260223-WA0003.mp3" type="audio/mpeg">
-    </audio>
+<div class="container">
+    <header>
+        <h1>Simulado Preparatório</h1>
+        <p class="subtitle">Língua Portuguesa — 15 Questões</p>
+    </header>
 
-    <div class="wrapper-total" id="envelopeWrapper" onclick="iniciar()">
-        <div class="envelope" id="envelopeAnim"></div>
-        <div class="instrucao">CLIQUE PARA ABRIR</div>
+    <form id="quizForm">
+        <div id="questionsContainer"></div>
+        <button type="button" class="btn-submit" onclick="gradeQuiz()">Finalizar e Enviar Respostas</button>
+    </form>
+
+    <div id="result">
+        <div class="score-box" id="scoreBox"></div>
     </div>
+</div>
 
-    <div id="sky"></div>
+<script>
+    const quizData = [
+        { id: 1, q: "Assinale a alternativa que apresenta um erro de regência verbal:", options: ["Assistimos ao filme ontem.", "Esqueci-me do compromisso.", "O cargo que ele aspira é alto.", "Prefiro café a chá."], correct: 2 },
+        { id: 2, q: "Qual frase está correta quanto à concordância verbal?", options: ["Houveram muitos problemas.", "Faziam dois anos que não o via.", "Mais de um aluno se abraçaram.", "Fui eu que resolvi o exercício."], correct: 3 },
+        { id: 3, q: "O uso da crase está INCORRETO em:", options: ["Refiro-me à diretora.", "Entreguei o documento à Vossa Excelência.", "Chegamos à uma hora da tarde.", "Estudou de segunda à sexta."], correct: 1 },
+        { id: 4, q: "Em 'Sabe-se que haverá mudanças', a partícula 'se' é:", options: ["Pronome reflexivo", "Partícula apassivadora", "Índice de indeterminação do sujeito", "Conjunção integrante"], correct: 1 },
+        { id: 5, q: "Identifique a palavra formada por derivação parassintética:", options: ["Infelizmente", "Deslealdade", "Anoitecer", "Girassol"], correct: 2 },
+        { id: 6, q: "Assinale a alternativa onde a colocação pronominal está correta:", options: ["Me empreste o livro.", "Tudo resolveu-se rapidamente.", "Não me fale sobre isso.", "Tinham avisado-nos da prova."], correct: 2 },
+        { id: 7, q: "Qual palavra está escrita corretamente conforme o Novo Acordo Ortográfico?", options: ["Idéia", "Vôo", "Autoestima", "Micro-ondas"], correct: 3 },
+        { id: 8, q: "Na frase 'Embora chorasse, manteve a pose', a conjunção introduz valor de:", options: ["Causa", "Concessão", "Consequência", "Condição"], correct: 1 },
+        { id: 9, q: "O termo destacado é complemento nominal em:", options: ["A leitura *dos livros* instrui.", "A casa *do Pedro* é bonita.", "Gosto *de chocolate*.", "Morava *perto da praia*."], correct: 0 },
+        { id: 10, q: "Assinale o sinônimo correto para a palavra 'Efémero':", options: ["Duradouro", "Passageiro", "Eterno", "Forte"], correct: 1 },
+        { id: 11, q: "Qual das opções apresenta uma frase de sentido ambíguo?", options: ["O menino viu o pássaro na árvore.", "O pai viu o filho correndo com seu cachorro.", "A menina comprou um livro novo.", "Eles viajaram ontem à noite."], correct: 1 },
+        { id: 12, q: "A figura de linguagem presente em 'O sol amanheceu sorrindo' é:", options: ["Metáfora", "Prosopopeia", "Antítese", "Hipérbole"], correct: 1 },
+        { id: 13, q: "Indique a alternativa que apresenta apenas substantivos abstratos:", options: ["Cadeira, mesa, amor", "Beleza, saudade, justiça", "Fada, ferro, pedra", "Deus, vento, luz"], correct: 1 },
+        { id: 14, q: "A frase pontuada corretamente é:", options: ["Maria compre, pão, leite e café.", "Ontem à noite, nós fomos ao cinema.", "O menino, que era esperto resolveu tudo.", "Se você estudar, passará."], correct: 3 },
+        { id: 15, q: "Indique o antônimo exato da palavra 'Altruísmo':", options: ["Generosidade", "Egoísmo", "Filantropia", "Humildade"], correct: 1 }
+    ];
 
-    <div class="card-luxo" id="convite">
-        <p class="idade">17 ANOS</p>
-        <h1 class="nome">Thaís Vitória</h1>
-        <p class="frase">"Celebrar a vida é colecionar momentos ao lado de quem amamos."</p>
-        <div class="infos">
-            📅 <b>25 DE ABRIL DE 2026</b>
-            ⏰ <b>ÀS 19:30 HORAS</b>
-            📍 <b>RUA DO EVENTO, Nº 00</b>
-        </div>
-        <input type="text" id="nomeConvidado" placeholder="Seu nome completo">
-        <button onclick="confirmar(true)">CONFIRMAR PRESENÇA</button>
-        <p class="nao-ir" onclick="confirmar(false)">Não poderei ir</p>
-    </div>
+    const container = document.getElementById('questionsContainer');
 
-    <script>
-        function iniciar() {
-            const wrapper = document.getElementById('envelopeWrapper');
-            const env = document.getElementById('envelopeAnim');
-            const card = document.getElementById('convite');
-            const som = document.getElementById('musica');
+    // Renderizar as questões
+    quizData.forEach((item, index) => {
+        let questionHtml = `
+            <div class="question-card" id="block-${index}">
+                <p class="question-text">${index + 1}. ${item.q}</p>
+                <ul class="options-list">
+        `;
+        
+        item.options.forEach((opt, optIndex) => {
+            questionHtml += `
+                <li>
+                    <label id="label-${index}-${optIndex}" for="radio-${index}-${optIndex}">
+                        <input type="radio" id="radio-${index}-${optIndex}" name="question-${index}" value="${optIndex}" onchange="saveProgress(${index}, ${optIndex})">
+                        ${opt}
+                    </label>
+                </li>
+            `;
+        });
 
-            // Tenta tocar o áudio imediatamente
-            som.play().catch(error => console.log("Erro ao tocar música:", error));
+        questionHtml += `</ul></div>`;
+        container.innerHTML += questionHtml;
+    });
 
-            env.classList.add('open');
+    // Salva a resposta e adiciona uma classe visual temporária de selecionado
+    function saveProgress(qIndex, optIndex) {
+        localStorage.setItem(`q-${qIndex}`, optIndex);
+        
+        // Remove destaque visual das outras opções da mesma pergunta
+        quizData[qIndex].options.forEach((_, idx) => {
+            document.getElementById(`label-${qIndex}-${idx}`).classList.remove('selected-dark');
+        });
+        // Adiciona à opção selecionada
+        document.getElementById(`label-${qIndex}-${optIndex}`).classList.add('selected-dark');
+    }
 
-            setTimeout(() => {
-                wrapper.classList.add('fade-out');
-                setTimeout(() => {
-                    wrapper.style.display = 'none';
-                    card.style.display = 'flex';
-                    chuvaDeEstrelas();
-                }, 600);
-            }, 800);
-        }
+    // Carrega o progresso ao reabrir a página
+    function loadProgress() {
+        quizData.forEach((item, index) => {
+            const savedValue = localStorage.getItem(`q-${index}`);
+            if (savedValue !== null) {
+                const input = document.getElementById(`radio-${index}-${savedValue}`);
+                if (input) {
+                    input.checked = true;
+                    document.getElementById(`label-${index}-${savedValue}`).classList.add('selected-dark');
+                }
+            }
+        });
+    }
 
-        function chuvaDeEstrelas() {
-            const sky = document.getElementById('sky');
-            const cores = ['#6a00ff', '#9c00ff', '#c400ff', '#ffffff'];
-            setInterval(() => {
-                const s = document.createElement('div');
-                s.className = 'star';
-                s.innerHTML = "✦";
-                s.style.left = Math.random() * 100 + "vw";
-                s.style.top = "-20px";
-                s.style.color = cores[Math.floor(Math.random() * cores.length)];
-                s.style.fontSize = (Math.random() * 12 + 8) + "px";
-                s.style.animationDuration = (Math.random() * 3 + 2) + "s";
-                sky.appendChild(s);
-                setTimeout(() => s.remove(), 4000);
-            }, 100);
-        }
+    // Corrige e exibe o resultado final
+    function gradeQuiz() {
+        let score = 0;
+        
+        quizData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+            
+            // Limpa as classes de seleção e resposta
+            item.options.forEach((_, optIndex) => {
+                const lbl = document.getElementById(`label-${index}-${optIndex}`);
+                lbl.className = '';
+            });
 
-        function confirmar(vai) {
-            const nome = document.getElementById("nomeConvidado").value;
-            if(!nome){ alert("Digite seu nome antes de confirmar."); return; }
-            const numero = "558184378356";
-            const mensagem = vai ? 
-                `Confirmado ✅ ${nome} estará presente na festa da Thaís Vitória!` : 
-                `${nome} infelizmente não poderá comparecer à festa.`;
-            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, "_blank");
-        }
-    </script>
+            if (selected) {
+                const answerIndex = parseInt(selected.value);
+                
+                if (answerIndex === item.correct) {
+                    score++;
+                    document.getElementById(`label-${index}-${answerIndex}`).className = 'correct';
+                } else {
+                    document.getElementById(`label-${index}-${answerIndex}`).className = 'incorrect';
+                    document.getElementById(`label-${index}-${item.correct}`).className = 'correct';
+                }
+            } else {
+                document.getElementById(`label-${index}-${item.correct}`).className = 'correct';
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        const scoreBox = document.getElementById('scoreBox');
+        resultDiv.style.display = 'block';
+        
+        const percentage = ((score / 15) * 100).toFixed(1);
+        scoreBox.innerHTML = `🎯 Resultado do Simulado<br><span style="font-size: 1.1rem; font-weight: normal; color: var(--text-muted);">Você acertou <strong>${score}</strong> de <strong>15</strong> questões (${percentage}%)</span>`;
+        
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.onload = loadProgress;
+</script>
+
 </body>
 </html>
+
